@@ -30,4 +30,4 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-hoshino/config
+hoshino/config/*
