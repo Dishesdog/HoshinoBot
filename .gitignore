@@ -29,3 +29,5 @@ log/
 __pycache__/
 *.py[cod]
 *$py.class
+
+hoshino/config
