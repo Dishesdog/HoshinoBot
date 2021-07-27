@@ -47,7 +47,6 @@ async def enable_service(session: CommandSession):
 async def disable_service(session: CommandSession):
     await switch_service(session, turn_on=False)
 
-
 async def switch_service(session: CommandSession, turn_on: bool):
     action_tip = '启用' if turn_on else '禁用'
     if session.ctx['message_type'] == 'group':
