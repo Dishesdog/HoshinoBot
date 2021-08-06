@@ -25,7 +25,7 @@ sv_help = '''
 
 sv = Service(
     name='B站动态',  # 功能名
-    use_priv=priv.NORMAL,  # 使用权限
+    use_priv=priv.SUPERUSER,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
     visible=True,  # False隐藏
     enable_on_default=True,  # 是否默认启用
