@@ -62,12 +62,12 @@ async def fire(event: Event, session: ActSession):
     if pos == times:  # shoot
         session.close()
         await session.send(event, '枪响了，你死了！')
-        await silence(event, 60)
+        await silence(event, 120)
     elif times == 5:
         session.close()
         user = session.rotate.__next__()
         await session.send(event, f'你长舒了一口气，并反手击毙了{MessageSegment.at(user)}')
-        await session.bot.set_group_ban(group_id=event.group_id, user_id=user, duration=60)
+        await session.bot.set_group_ban(group_id=event.group_id, user_id=user, duration=120)
     else:
         session.state['times'] += 1
         session.state['turn'] = session.rotate.__next__()

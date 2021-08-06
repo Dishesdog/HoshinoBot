@@ -14,7 +14,7 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name='cos图',  # 功能名
+    name='cos',  # 功能名
     use_priv=priv.NORMAL,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
     visible=True,  # 是否可见
@@ -28,12 +28,12 @@ EXCEED_NOTICE = f'今天已经要了{_max}张图了~~~明天进货吧~~~!'
 _limit = DailyNumberLimiter(_max)
 
 
-@sv.on_fullmatch(["帮助-Cos图"])
+@sv.on_fullmatch(["帮助-cos"])
 async def helper(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
 
 
-@sv.on_fullmatch(('coser', 'cos'))
+@sv.on_fullmatch(('coser', 'cos', 'Cos'))
 async def cosPic(bot, ctx: CQEvent):
     if not _limit.check(ctx.user_id):
         await bot.send(ctx, EXCEED_NOTICE, at_sender=True)
