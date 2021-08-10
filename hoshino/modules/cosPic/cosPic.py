@@ -3,14 +3,14 @@ import requests
 import hoshino
 import os
 import hashlib
-from .Coser import Coser, saveToDb
+from .data import saveToDb
 from hoshino import R, Service, priv
 from hoshino.typing import CQEvent
 from hoshino.util import FreqLimiter, DailyNumberLimiter
 
 sv_help = '''
 不要沉迷二次元, 偶尔也要三次元一下啊
-输入cos | coser 随机获取一张cos图
+输入cos随机获取一张图片
 '''.strip()
 
 sv = Service(
@@ -33,7 +33,7 @@ async def helper(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
 
 
-@sv.on_fullmatch(('coser', 'cos', 'Cos'))
+@sv.on_fullmatch(('cos', 'Cos'))
 async def cosPic(bot, ctx: CQEvent):
     if not _limit.check(ctx.user_id):
         await bot.send(ctx, EXCEED_NOTICE, at_sender=True)
@@ -53,6 +53,7 @@ async def cosPic(bot, ctx: CQEvent):
     b = imgUrl.encode(encoding='utf-8')
     md5.update(b)
     str_md5 = md5.hexdigest()
-    saveToDb(0, 'api.repeater.vip', 0, '', imgUrl, 'cos', str_md5, '')
+    # 写入数据库
+    saveToDb(imgUrl, str_md5)
     msg = f'[CQ:image,file={imgUrl}]'.format(imgUrl=imgUrl)
     await bot.send(ctx, msg, at_sender=True)
