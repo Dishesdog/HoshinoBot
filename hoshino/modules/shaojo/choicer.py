@@ -10,8 +10,6 @@ class Choicer:
         self.rand = random.Random()
         self.date = config['date']
         self.map = {}
-        self.vals = {}
-        self.m = {}
 
         parts = config['parts']
         for name in parts:
