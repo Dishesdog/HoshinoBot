@@ -5,6 +5,20 @@ import json
 
 
 class Choicer:
+
+    def __init__(self, config):
+        self.rand = random.Random()
+        self.date = config['date']
+        self.map = {}
+        self.vals = {}
+        self.m = {}
+
+        parts = config['parts']
+        for name in parts:
+            self.map[name] = self._compile(parts[name])
+
+        self.result = [self._compile(x) for x in config['result']]
+
     def _compile(self, d):
         t = type(d)
         if t is list:
@@ -80,17 +94,6 @@ class Choicer:
                 return ''
         else:
             return ''
-
-    def __init__(self, config):
-        self.rand = random.Random()
-        self.date = config['date']
-        self.map = {}
-
-        parts = config['parts']
-        for name in parts:
-            self.map[name] = self._compile(parts[name])
-
-        self.result = [self._compile(x) for x in config['result']]
 
     def _setseed(self, qq):
         self.rand.seed(qq * (int(time.time() / 3600 / 24) if self.date else 1))

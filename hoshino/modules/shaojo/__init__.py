@@ -28,11 +28,7 @@ async def other_shoujo(bot, ev: CQEvent):
             arr.append(int(i['data']['qq']))
     gid = ev.group_id
     for uid in arr:
-        info = await bot.get_group_member_info(
-            group_id=gid,
-            user_id=uid,
-            no_cache=True
-        )
+        info = await bot.get_group_member_info(group_id=gid, user_id=uid, no_cache=True)
         name = info['card'] or info['nickname']
         msg = inst.format_msg(uid, name)
         await bot.send(ev, msg)
