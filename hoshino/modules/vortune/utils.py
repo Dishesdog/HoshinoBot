@@ -25,7 +25,7 @@ async def initialization():
     global thesaurusReady
     global botQQ
     bot = nonebot.get_bot()
-    if thesaurusReady == False:
+    if not thesaurusReady:
         botQQ = await bot.get_login_info()
         botQQ = int(botQQ['user_id'])
         thesaurusReady = True

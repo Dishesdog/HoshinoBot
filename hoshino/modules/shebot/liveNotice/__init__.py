@@ -131,7 +131,7 @@ async def check_other_live(lv):
 
 @sv.on_command('live', aliases='订阅直播推送', only_to_me=False)
 async def subscribe(session: CommandSession):
-    session.get('platform', prompt='请选择订阅的平台，目前支持哔哩哔哩和斗鱼')
+    session.get('platform', prompt='请选择订阅的平台，目前支持哔哩哔哩')
     if session.state['platform'] == '哔哩哔哩' or session.state['platform'] == 'bilibili':
         platform = 'bilibili'
     elif session.state['platform'] == '斗鱼' or session.state['platform'] == 'douyu':

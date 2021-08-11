@@ -60,8 +60,7 @@ async def show_meme(bot, event):
         return
 
     idx = img_name.index(sel)
-    await bot.send(event,
-                   MessageSegment.image(f'file:///{os.path.join(img_dir, img[idx])}'))
+    await bot.send(event, MessageSegment.image(f'file:///{os.path.join(img_dir, img[idx])}'))
 
 
 @sv.on_prefix(('上传表情'))
@@ -72,15 +71,15 @@ async def upload_meme(bot, event):
     msg = event.message.extract_plain_text().split(" ")
     meme_name = ''.join(e for e in msg[0] if e.isalnum())
     for seg in event.message:
-        if (seg.type == 'image'):
+        if seg.type == 'image':
             meme_path = download_meme(seg.data['url'], meme_name)
-            if (meme_path == ""):
+            if meme_path == "":
                 await bot.send(event, f'上传表情"{meme_name}"失败', at_sender=True)
             load_images()
             await bot.send(event, f'上传表情"{meme_name}"成功', at_sender=True)
 
 
-@sv.on_prefix(('删除表情'))
+@sv.on_prefix('删除表情')
 async def remove_meme(bot, event):
     if not priv.check_priv(event, priv.ADMIN):
         await bot.send(event, '该操作需要管理员权限', at_sender=True)
@@ -102,7 +101,7 @@ async def remove_meme(bot, event):
     del img[idx], img_name[idx]
 
 
-@sv.on_prefix(('生成表情',))
+@sv.on_prefix('生成表情')
 async def generate_meme(bot, event):
     msg = event.message.extract_plain_text().split(" ")
     sel = msg[0]
