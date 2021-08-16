@@ -54,6 +54,6 @@ async def cosPic(bot, ctx: CQEvent):
     md5.update(b)
     str_md5 = md5.hexdigest()
     # 写入数据库
-    saveToDb(imgUrl, str_md5)
     msg = f'[CQ:image,file={imgUrl}]'.format(imgUrl=imgUrl)
     await bot.send(ctx, msg, at_sender=True)
+    saveToDb(imgUrl, str_md5)
