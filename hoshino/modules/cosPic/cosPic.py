@@ -41,12 +41,12 @@ async def cosPic(bot, ctx: CQEvent):
     async with aiohttp.TCPConnector(verify_ssl=False) as connector:
         async with aiohttp.request(
                 method='GET',
-                url='http://api.repeater.vip/cos-img/',
+                url='http://api.rosysun.cn/cos',
                 connector=connector,
         ) as resp:
-            imgUrl = await resp.text()
-    if len(imgUrl) == 0:
-        await bot.send(ctx, '没有结果')
+            imgUrl, code = await resp.text(), resp.status
+
+    if code == 404:
         return
     # 记录图片
     md5 = hashlib.md5()
