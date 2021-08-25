@@ -19,6 +19,7 @@ sv_help = '''
 - [cos/Cos/COS]
 - [cos状态] 查看统计状态
 - [补充次数] 加个钟@aaa
+- [cos字典生成] 生成图库字典
 '''.strip()
 
 sv = Service(
@@ -37,25 +38,28 @@ async def help_cos_v2(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
 
 
-@sv.on_fullmatch('cos状态')
+@sv.on_fullmatch('cos字典生成')
 async def check_local_status(bot, ev):
     #  每次检测本地状态时 重新构建字典
-    Util.generate()
+    msg = '这也是你能干的事？速速爬!!'
+    if priv.check_priv(ev, priv.SUPERUSER):
+        Util.generate()
+    await bot.send(ev, msg)
+
+
+@sv.on_fullmatch('cos状态')
+async def check_local_status(bot, ev):
     #  获取涩图路径下所有文件数量
     image_num = Util.getImgCount()
-
     gid = ev['group_id']
-
-    msg = '这也是你能看的？赶紧爬!!'
-    if priv.check_priv(ev, priv.SUPERUSER):
-        total, sp = Util.getStat(gid)
-        text1 = f'【数据检查】：本地图片的存量为:{image_num}张\n'
-        text2 = f'【设定情况】：每日上限为：{_max}次,冷却为：{_cd}秒\n'
-        text3 = f'【调用情况】：本群已调用{total}次\n'
-        text4 = f'【涩批头子】：还没有人荣获涩批头子称号'
-        if int(sp) > 0:
-            text4 = f'【涩批头子】：{MessageSegment.at(int(sp))} 荣获涩批头子称号'
-        msg = text1 + text2 + text3 + text4
+    total, sp = Util.getStat(gid)
+    text1 = f'【数据检查】：本地图片的存量为:{image_num}张\n'
+    text2 = f'【设定情况】：每日上限为：{_max}次,冷却为：{_cd}秒\n'
+    text3 = f'【调用情况】：本群已调用{total}次\n'
+    text4 = f'【涩批头子】：还没有人荣获涩批头子称号'
+    if int(sp) > 0:
+        text4 = f'【涩批头子】：{MessageSegment.at(int(sp))} 荣获涩批头子称号'
+    msg = text1 + text2 + text3 + text4
 
     await bot.send(ev, msg)
 
