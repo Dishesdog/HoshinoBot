@@ -52,7 +52,9 @@ async def check_local_status(bot, ev):
         text1 = f'【数据检查】：本地图片的存量为:{image_num}张\n'
         text2 = f'【设定情况】：每日上限为：{_max}次,冷却为：{_cd}秒\n'
         text3 = f'【调用情况】：本群已调用{total}次\n'
-        text4 = f'【涩批之王】：{MessageSegment.at(int(sp))} 荣获涩批之王称号'
+        text4 = f'【涩批头子】：还没有人荣获涩批头子称号'
+        if sp > 0:
+            text4 = f'【涩批头子】：{MessageSegment.at(int(sp))} 荣获涩批头子称号'
         msg = text1 + text2 + text3 + text4
 
     await bot.send(ev, msg)
