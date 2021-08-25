@@ -77,17 +77,16 @@ async def getPic(bot, ev):
     # 记录统计
     Util.count_gid_uid(gid, uid)
     pic = R.img('cos/', pic)
-    # try:
-    await bot.send(ev, pic.cqcode)
-    # except CQHttpError:
-    #     await bot.send(ev, '发不出去勒...')
+    try:
+        await bot.send(ev, pic.cqcode)
+    except CQHttpError:
+        await bot.send(ev, '发不出去勒...')
 
 
-# 群管理自助重置日上限（可以给自己重置，可以@多人）
 @sv.on_prefix(('加个钟', '补魔'))
 async def reset(bot, ev: CQEvent):
     if not priv.check_priv(ev, priv.SUPERUSER):
-        await bot.send(ev, '您的权限不足！请联系群管哦~')
+        await bot.send(ev, '这是你能加的? 赶紧爬!!')
         return
     count = 0
     for m in ev.message:
@@ -96,4 +95,4 @@ async def reset(bot, ev: CQEvent):
             _maxLmt.reset(uid)
             count += 1
     if count:
-        await bot.send(ev, f"已为{count}位用户重置次数！注意身体哦～")
+        await bot.send(ev, f"已为{count}位用户重置次数！")
