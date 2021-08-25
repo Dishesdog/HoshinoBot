@@ -18,6 +18,7 @@ Util.generate()
 sv_help = '''
 - [cos/Cos/COS]
 - [cos状态] 查看统计状态
+- [补充次数] 加个钟@aaa
 '''.strip()
 
 sv = Service(
