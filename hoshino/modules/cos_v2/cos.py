@@ -6,7 +6,7 @@ from hoshino.util import FreqLimiter, DailyNumberLimiter
 from hoshino.typing import CQEvent
 from .cos_util import Util
 
-_max = 3  # 每人日调用上限(次)
+_max = 10  # 每人日调用上限(次)
 _maxLmt = DailyNumberLimiter(_max)
 
 _cd = 3  # 调用间隔冷却时间(s)
@@ -62,7 +62,7 @@ async def getPic(bot, ev):
     uid = ev['user_id']
     gid = ev['group_id']
     if not _maxLmt.check(uid):
-        EXCEED_NOTICE = f'您已经冲过{_max}次了，买个营养快线或PY管重置次数！'
+        EXCEED_NOTICE = f'您已经冲过{_max}次了，买个营养快线去找管理PY重置次数吧！'
         await bot.send(ev, EXCEED_NOTICE, at_sender=True)
         return
     if not _fLmt.check(uid):
