@@ -39,7 +39,7 @@ class Util:
     # 读取文件
     @classmethod
     def readFile(cls, file):
-        if os.path.exists(file):
+        if os.path.exists(fd + '/' + file):
             f = open(os.path.join(fd, file))
             return json.load(f)
         return None
@@ -61,16 +61,27 @@ class Util:
 
     @classmethod
     def count_gid_uid(cls, gid, uid):
+        uid = str(uid)
+        gid = str(gid)
         """
         记录群员使用数据
         """
-        file = str(gid) + '_count.json'
+        file = gid + '_count.json'
         data = cls.readFile(file)
-        if uid not in data['userMap']:
-            data['userMap'][uid] = 1
+        if data is None:
+            data = {
+                'count': 1,
+                'userMap': {
+                    uid: 1
+                }
+            }
         else:
-            data['userMap'][uid] = data['userMap'][uid] + 1
-        data['count'] = data['count'] + 1
+            if uid not in data['userMap']:
+                data['userMap'][uid] = 1
+            else:
+                data['userMap'][uid] = data['userMap'][uid] + 1
+            data['count'] = data['count'] + 1
+
         #  存储数据
         cls.saveFile(data, os.path.join(fd, file))
 
