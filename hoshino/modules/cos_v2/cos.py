@@ -21,7 +21,7 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name='cos',  # 功能名
+    name='cos_v2',  # 功能名
     use_priv=priv.NORMAL,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
     visible=True,  # 是否可见
