@@ -95,4 +95,4 @@ class Util:
         userMap = data['userMap']
         count = data['count']
         sp = max(userMap, key=lambda k: userMap[k])
-        return count, sp
+        return count, sp, userMap[sp]

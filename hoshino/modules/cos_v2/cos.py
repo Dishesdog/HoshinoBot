@@ -52,13 +52,13 @@ async def check_local_status(bot, ev):
     #  获取涩图路径下所有文件数量
     image_num = Util.getImgCount()
     gid = ev['group_id']
-    total, sp = Util.getStat(gid)
+    total, sp, num = Util.getStat(gid)
     text1 = f'【数据检查】：本地图片的存量为:{image_num}张\n'
-    text2 = f'【设定情况】：每日上限为：{_max}次,冷却为：{_cd}秒\n'
+    text2 = f'【设定情况】：单人日上限：{_max}次, 冷却：{_cd}秒\n'
     text3 = f'【调用情况】：本群已调用{total}次\n'
     text4 = f'【涩批头子】：还没有人荣获涩批头子称号'
     if int(sp) > 0:
-        text4 = f'【涩批头子】：{MessageSegment.at(int(sp))} 荣获涩批头子称号'
+        text4 = f'【涩批头子】：{MessageSegment.at(int(sp))}以{num}次 荣获涩批头子称号'
     msg = text1 + text2 + text3 + text4
 
     await bot.send(ev, msg)
