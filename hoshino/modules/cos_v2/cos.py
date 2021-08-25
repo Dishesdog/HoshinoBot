@@ -35,7 +35,7 @@ sv = Service(
 
 @sv.on_fullmatch(["帮助-cos"])
 async def help_cos_v2(bot, ev):
-    await bot.send(ev, sv_help, at_sender=True)
+    await bot.send(ev, sv_help)
 
 
 @sv.on_fullmatch('cos字典生成')

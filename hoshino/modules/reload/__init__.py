@@ -24,11 +24,11 @@ SUPERUSERS = bot.config.SUPERUSERS  # 获取 SUPERUSERS
 @on_command('reload', aliases=('reboot', '重启', '重载'), only_to_me=True)
 async def reload(session: CommandSession):
     uid = session.event.user_id
-    if not uid in SUPERUSERS:  # SUPERUSERS: list
+    if uid not in SUPERUSERS:  # SUPERUSERS: list
         return
     count = Counter.count + 1
-    content = f'''class Counter:
+    msg = f'''class Counter:
     count = {count}'''
-    with open(init, 'w') as file:
-        file.write(content)
-    await session.finish('重启中~')
+    with open(init, 'w') as f:
+        f.write(msg)
+    session.finish('重启中~')
