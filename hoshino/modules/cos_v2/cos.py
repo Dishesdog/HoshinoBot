@@ -62,11 +62,11 @@ async def getPic(bot, ev):
     uid = ev['user_id']
     gid = ev['group_id']
     if not _maxLmt.check(uid):
-        EXCEED_NOTICE = f'您已经冲过{_max}次了，请明日再来或请求群管重置次数哦！'
+        EXCEED_NOTICE = f'您已经冲过{_max}次了，买个营养快线或PY管重置次数！'
         await bot.send(ev, EXCEED_NOTICE, at_sender=True)
         return
     if not _fLmt.check(uid):
-        await bot.send(ev, f"您冲得太快了，有{_cd}秒冷却哦", at_sender=True)
+        await bot.send(ev, f"你不需要休息么", at_sender=True)
         return
 
     _fLmt.start_cd(uid)
