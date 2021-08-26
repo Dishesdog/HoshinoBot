@@ -77,8 +77,9 @@ async def getPic(bot, ev):
         await bot.send(ev, f"你不需要休息么", at_sender=True)
         return
 
-    _fLmt.start_cd(uid)
-    _maxLmt.increase(uid)
+    if not priv.check_priv(ev, priv.SUPERUSER):
+        _maxLmt.increase(uid)
+        _fLmt.start_cd(uid)
 
     pic = Util.getImg()
 
