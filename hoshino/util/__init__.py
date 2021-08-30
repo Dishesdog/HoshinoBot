@@ -53,7 +53,10 @@ async def silence(ev: CQEvent, ban_time, skip_su=True):
         await hoshino.get_bot().set_group_ban(self_id=ev.self_id, group_id=ev.group_id, user_id=ev.user_id,
                                               duration=ban_time)
     except ActionFailed as e:
-        hoshino.logger.error(f'禁言失败 {e}')
+        if 'NOT_MANAGEABLE' in str(e):
+            return
+        else:
+            hoshino.logger.error(f'禁言失败 {e}')
     except Exception as e:
         hoshino.logger.exception(e)
 
