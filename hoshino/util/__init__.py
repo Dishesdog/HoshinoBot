@@ -198,3 +198,6 @@ def render_list(lines, prompt="") -> str:
     if n == 1:
         return prompt + "\n┗" + lines[0]
     return prompt + "\n┣" + "\n┣".join(lines[:-1]) + "\n┗" + lines[-1]
+
+
+from .browser import *
