@@ -29,5 +29,6 @@ __pycache__/
 *$py.class
 
 hoshino/config/*
+/data
 
 poetry.lock

@@ -3,8 +3,8 @@ import os
 import random
 import hoshino
 
-# 当前文件夹
-fd = os.path.dirname(__file__)
+# 存储文件夹
+data_path = hoshino.config.DATA_DIR + 'modules/cos_v2/'
 
 # 填写你的本地涩图文件夹路径
 cos_path = hoshino.config.RES_DIR + 'img/cos/'
@@ -28,7 +28,7 @@ class Util:
             'count': len(picList),
             'list': picList
         }
-        cls.saveFile(data, os.path.join(fd, 'img.json'))
+        cls.saveFile(data, os.path.join(data_path, 'img.json'))
 
     # 写入文件
     @classmethod
@@ -39,8 +39,8 @@ class Util:
     # 读取文件
     @classmethod
     def readFile(cls, file):
-        if os.path.exists(fd + '/' + file):
-            f = open(os.path.join(fd, file))
+        if os.path.exists(data_path + '/' + file):
+            f = open(os.path.join(data_path, file))
             return json.load(f)
         return None
 
@@ -83,7 +83,7 @@ class Util:
             data['count'] = data['count'] + 1
 
         #  存储数据
-        cls.saveFile(data, os.path.join(fd, file))
+        cls.saveFile(data, os.path.join(data_path, file))
 
     @classmethod
     def getStat(cls, gid):
