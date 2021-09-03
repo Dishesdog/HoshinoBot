@@ -6,7 +6,7 @@ from hoshino.util import FreqLimiter, DailyNumberLimiter
 from hoshino.typing import CQEvent
 from .cos_util import Util
 
-_max = 10  # 每人日调用上限(次)
+_max = 5  # 每人日调用上限(次)
 _maxLmt = DailyNumberLimiter(_max)
 
 _cd = 3  # 调用间隔冷却时间(s)
