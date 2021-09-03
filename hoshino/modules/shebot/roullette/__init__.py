@@ -127,3 +127,10 @@ async def start_roulette(event: Event, session: ActSession):
         await session.send(event, f'游戏开始,{rule}现在请{MessageSegment.at(session.state["turn"])}开枪')
     else:
         await session.send(event, '游戏已经开始了')
+
+
+@sv.on_fullmatch(["靶子王你飘了啊"])
+async def force(bot: HoshinoBot, ev: Event):
+    if not priv.check_priv(ev, priv.SUPERUSER):
+        msg = f"就在这时旁边正在进行的一场决斗中一颗流弹击中了你,你死了{MessageSegment.at(502199815)}"
+        await bot.send(ev, msg)
