@@ -1,17 +1,19 @@
 from aiocqhttp.message import MessageSegment
 from hoshino.service import Service, priv
 from hoshino.typing import HoshinoBot, CQEvent as Event
-from .._interact import interact, ActSession
+from .roulette_source import interact, ActSession
+from .roulette_data import dataObj
 from hoshino.util import silence
 from random import randint, shuffle, choice
 from itertools import cycle
 
 sv_help = """
-[1] 输入 俄罗斯轮盘赌 轮盘赌 开启游戏
+[1] 输入 轮盘赌 开启游戏
+[2] 输入 检测轮盘赌 查询数据
 """
 
 sv = Service(
-    name='俄罗斯轮盘赌',
+    name='轮盘赌',
     use_priv=priv.NORMAL,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
     visible=True,  # 是否可见
@@ -50,8 +52,8 @@ ylive = [
 ]
 
 
-@sv.on_fullmatch(["帮助-俄罗斯轮盘赌"])
-async def help(bot, ev):
+@sv.on_fullmatch(["帮助-轮盘赌"])
+async def helper(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
 
 
@@ -60,6 +62,7 @@ async def roulette(bot: HoshinoBot, ev: Event):
     try:
         session = ActSession.from_event('俄罗斯轮盘赌', ev, max_user=3, usernum_limit=True)
         interact.add_session(session)
+        dataObj.incrJoinNum(ev.group_id, ev.user_id)
         await bot.send(ev, '游戏开始,目前有1位玩家，还缺1名玩家，发送"参与轮盘赌"加入游戏')
     except ValueError as e:
         await bot.finish(ev, f'{e}')
@@ -69,47 +72,55 @@ async def roulette(bot: HoshinoBot, ev: Event):
 async def join_roulette(bot: HoshinoBot, ev: Event):
     session = interact.find_session(ev, name='俄罗斯轮盘赌')
     if not session:  # session未创建
-        await bot.send(ev, '游戏未创建，发送轮盘赌或者俄罗斯轮盘赌创建游戏')
+        await bot.send(ev, '游戏未创建，发送轮盘赌创建游戏')
         return  # 不处理
+    if session.count_user() >= 3:
+        await bot.send(ev, f'目前已有3位玩家,发送“开始”进行游戏')
+
     try:
         interact.join_session(ev, session)
+        dataObj.incrJoinNum(ev.group_id, ev.user_id)
         await bot.send(ev, f'成功加入,目前有{session.count_user()}位玩家,发送“开始”进行游戏')
 
     except ValueError as e:
         await bot.finish(ev, f'{e}')
 
 
-@interact.add_action('俄罗斯轮盘赌', (f'{MessageSegment.face(169)}', '开枪'))
-async def fire(event: Event, session: ActSession):
+@interact.add_action('轮盘赌', (f'{MessageSegment.face(169)}', '开枪'))
+async def fire(ev: Event, session: ActSession):
     if not session.state.get('started'):
-        await session.finish(event, '请先发送“开始”进行游戏')
+        await session.finish(ev, '请先发送“开始”进行游戏')
 
     if not session.pos:
         session.state['pos'] = randint(1, 6)  # 拨动轮盘，pos为第几发是子弹 """
     if not session.state.get('times'):
         session.state['times'] = 1
 
-    if event.user_id != session.state.get('turn'):
-        await session.finish(event, '现在枪不在你手上哦~')
+    if ev.user_id != session.state.get('turn'):
+        return
+        # await session.finish(event, '现在枪不在你手上哦~')
 
     pos = session.pos
     times = session.times
     if pos == times:  # shoot
         session.close()
-        await session.send(event, choice(ydie))
-        await silence(event, 120)
+        dataObj.incrDeadNum(ev.group_id, ev.user_id)  # 增加死亡数
+        await session.send(ev, choice(ydie))
+        await silence(ev, 120)
     elif times == 5:
         session.close()
         user = session.rotate.__next__()
-        await session.send(event, f'你长舒了一口气，并反手击毙了{MessageSegment.at(user)}')
-        await session.bot.set_group_ban(group_id=event.group_id, user_id=user, duration=120)
+        dataObj.incrKillNum(ev.group_id, ev.user_id)  # 增加击杀数
+        dataObj.incrDeadNum(ev.group_id, user)  # 增加死亡数
+        await session.send(ev, f'你长舒了一口气，并反手击毙了{MessageSegment.at(user)}')
+        await session.bot.set_group_ban(group_id=ev.group_id, user_id=user, duration=120)
     else:
         session.state['times'] += 1
         session.state['turn'] = session.rotate.__next__()
-        await session.send(event, f'{choice(ylive)},轮到{MessageSegment.at(session.state["turn"])}开枪')
+        await session.send(ev, f'{choice(ylive)},轮到{MessageSegment.at(session.state["turn"])}开枪')
 
 
-@interact.add_action('俄罗斯轮盘赌', '开始')
+@interact.add_action('轮盘赌', '开始')
 async def start_roulette(event: Event, session: ActSession):
     if session.count_user() < 2:
         await session.finish(event, '人数不足')
@@ -134,3 +145,26 @@ async def force(bot: HoshinoBot, ev: Event):
     if priv.check_priv(ev, priv.SUPERUSER):
         msg = f"就在这时旁边正在进行的一场决斗中一颗流弹击中了你,你死了{MessageSegment.at(502199815)}"
         await bot.send(ev, msg)
+
+
+@sv.on_fullmatch(["检测轮盘赌"])
+async def checkCount(bot: HoshinoBot, ev: Event):
+    gid = ev.group_id
+    data = dataObj.getStat(gid)
+
+    text1 = f"【总次数】：本群已玩过{data['total']}次\n"
+    text2 = f'【场次王】：本群还没有产生场次王\n'
+    text3 = f'【击杀王】：本群还没有产生击杀王\n'
+    text4 = f'【吸铁石】：本群还没有产生吸铁石'
+
+    if int(data['join']['id']) > 0:
+        text2 = f"【场次王】：{MessageSegment.at(int(data['join']['id']))} 参与 {data['join']['num']}\n"
+
+    if int(data['kill']['id']) > 0:
+        text3 = f"【击杀王】：{MessageSegment.at(int(data['kill']['id']))} 击杀 {data['kill']['num']}\n"
+
+    if int(data['dead']['id']) > 0:
+        text4 = f"【吸铁石】：{MessageSegment.at(int(data['dead']['id']))} 死亡 {data['dead']['num']}"
+
+    msg = text1 + text2 + text3 + text4
+    await bot.send(ev, msg)

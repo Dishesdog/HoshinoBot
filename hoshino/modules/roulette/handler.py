@@ -1,6 +1,6 @@
 from nonebot.message import CanceledException, message_preprocessor
 
-from ._interact import interact, ActSession
+from .roulette_source import interact
 from hoshino import logger
 from hoshino.typing import CQEvent, HoshinoBot
 

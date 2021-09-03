@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
+import base64
+import io
 import os
-import time
 import random
-from hoshino import R, Service, priv, util
+import time
+
+from hoshino import Service, priv, util
+from hoshino.config.path_config import TEMPLATE_PATH
 from hoshino.server.db.utils.point import add_random_points
 from .data_source import get_acg_image, get_stick, get_greet, get_msg
-from hoshino.config.path_config import TEMPLATE_PATH
-from nonebot.message import MessageSegment
-import io, base64
 
 sv_help = '''
 - [签到]
@@ -50,21 +51,17 @@ async def check_local_status(bot, ev):
 
 async def get_card(user_name: str, user_id: int):
     stick = await get_stick(user_id)
-    acg_url = await get_acg_image()
-
     day_time = time.strftime(r"%m/%d", time.localtime())
     date = time.strftime(r"%Y-%m-%d", time.localtime())
     random.seed()
-    cardname = random.choice(["card1"])
-    with open(f"{TEMPLATE_PATH}check_in/{cardname}.html", "r", encoding="utf-8") as f:
+    cardName = random.choice(["card1"])
+    with open(f"{TEMPLATE_PATH}check_in/{cardName}.html", "r", encoding="utf-8") as f:
         template = str(f.read())
 
     filename = f"temp-card-{user_id}"
 
     if os.path.isfile(f"{TEMPLATE_PATH}/check_in/temp/{filename}.html"):
-        modifiedTime = time.localtime(
-            os.stat(f"{TEMPLATE_PATH}/check_in/temp/{filename}.html").st_mtime
-        )
+        modifiedTime = time.localtime(os.stat(f"{TEMPLATE_PATH}/check_in/temp/{filename}.html").st_mtime)
         mtime = time.strftime(r"%Y%m%d", modifiedTime)
         ntime = time.strftime(r"%Y%m%d", time.localtime(time.time()))
         if mtime != ntime:
@@ -77,14 +74,13 @@ async def get_card(user_name: str, user_id: int):
         template = template.replace("[points]", str(points))
 
     template = template.replace("static/", "../static/")
-    template = template.replace("[acg_url]", acg_url)
+    if cardName == 'card2':
+        acg_url = await get_acg_image()
+        template = template.replace("[acg_url]", acg_url)
+
     template = template.replace("[greet]", await get_greet())
-    template = template.replace(
-        "[msg_of_the_day]", (await get_msg(user_id))["SENTENCE"]
-    )
-    template = template.replace(
-        "[avatar_url]", f"http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640"
-    )
+    template = template.replace("[msg_of_the_day]", (await get_msg(user_id))["SENTENCE"])
+    template = template.replace("[avatar_url]", f"http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640")
     template = template.replace("[day_time]", day_time)
     template = template.replace("[date]", date)
     template = template.replace("[user_name]", user_name)
@@ -93,9 +89,7 @@ async def get_card(user_name: str, user_id: int):
     template = template.replace("[comment]", stick["SIGN_TEXT"])
     template = template.replace("[resolve]", stick["UN_SIGN_TEXT"])
 
-    with open(
-            f"{TEMPLATE_PATH}check_in/temp/{filename}.html", "w", encoding="utf-8"
-    ) as f:
+    with open(f"{TEMPLATE_PATH}check_in/temp/{filename}.html", "w", encoding="utf-8") as f:
         f.write(template)
 
     return await generate_pic(filename)
