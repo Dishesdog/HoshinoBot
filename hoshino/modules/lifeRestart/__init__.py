@@ -45,7 +45,7 @@ def genp(prop):
     }
 
 
-@sv.on_fullmatch("人生重来")
+@sv.on_fullmatch("人生重来", '人生重启')
 async def remake(bot, ev: CQEvent):
     Life.load(FILE_PATH + '/data')
     life = Life()
