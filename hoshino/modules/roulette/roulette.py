@@ -86,7 +86,7 @@ async def join_roulette(bot: HoshinoBot, ev: Event):
         await bot.finish(ev, f'{e}')
 
 
-@interact.add_action('轮盘赌', (f'{MessageSegment.face(169)}', '开枪'))
+@interact.add_action('俄罗斯轮盘赌', (f'{MessageSegment.face(169)}', '开枪'))
 async def fire(ev: Event, session: ActSession):
     if not session.state.get('started'):
         await session.finish(ev, '请先发送“开始”进行游戏')
@@ -120,7 +120,7 @@ async def fire(ev: Event, session: ActSession):
         await session.send(ev, f'{choice(ylive)},轮到{MessageSegment.at(session.state["turn"])}开枪')
 
 
-@interact.add_action(('轮盘赌', '开始'))
+@interact.add_action(('俄罗斯轮盘赌', '开始'))
 async def start_roulette(event: Event, session: ActSession):
     if session.count_user() < 2:
         await session.finish(event, '人数不足')
