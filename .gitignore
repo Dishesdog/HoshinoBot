@@ -31,4 +31,7 @@ __pycache__/
 hoshino/config/*
 /data
 
+# mypy
+.mypy_cache/
 poetry.lock
+/data
