@@ -97,8 +97,7 @@ async def fire(ev: Event, session: ActSession):
         session.state['times'] = 1
 
     if ev.user_id != session.state.get('turn'):
-        return
-        # await session.finish(event, '现在枪不在你手上哦~')
+        await session.finish(ev, '现在枪不在你手上哦~')
 
     pos = session.pos
     times = session.times
