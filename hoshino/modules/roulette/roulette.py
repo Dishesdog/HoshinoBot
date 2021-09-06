@@ -120,7 +120,7 @@ async def fire(ev: Event, session: ActSession):
         await session.send(ev, f'{choice(ylive)},轮到{MessageSegment.at(session.state["turn"])}开枪')
 
 
-@interact.add_action(('俄罗斯轮盘赌', '开始'))
+@interact.add_action('俄罗斯轮盘赌', ('开始'))
 async def start_roulette(event: Event, session: ActSession):
     if session.count_user() < 2:
         await session.finish(event, '人数不足')
