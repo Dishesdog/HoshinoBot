@@ -8,11 +8,16 @@ from playwright.async_api import Browser, async_playwright
 _browser: Optional[Browser] = None
 
 
-async def init(**kwargs) -> Browser:
-    global _browser
-    browser = await async_playwright().start()
-    _browser = await browser.chromium.launch(**kwargs)
-    return _browser
+async def init(**kwargs) -> Optional[Browser]:
+    try:
+        global _browser
+        browser = await async_playwright().start()
+        _browser = await browser.chromium.launch(**kwargs)
+        return _browser
+    except NotImplementedError as e:
+        logger.warning(f'初始化playwright失败... {type(e)}')
+        logger.exception(e)
+        return None
 
 
 async def get_browser(**kwargs) -> Browser:
@@ -22,11 +27,6 @@ async def get_browser(**kwargs) -> Browser:
 async def close_browser():
     if _browser:
         await _browser.close()
-
-
-async def install():
-    logger.info("正在检查/安装Chormium更新")
-    os.system("python -m playwright install chromium")
 
 
 user_agent = [

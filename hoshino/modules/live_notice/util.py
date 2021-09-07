@@ -1,9 +1,9 @@
 import json
 import os
-import hoshino
+from hoshino import config
 
 # 存储文件夹
-data_path = hoshino.config.DATA_DIR + 'modules/live_notice/'
+data_path = config.DATA_PATH + 'modules/live_notice/'
 
 
 class BiliLive:

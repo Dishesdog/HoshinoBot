@@ -1,13 +1,13 @@
 import json
 import os
 import random
-import hoshino
+from hoshino import config
 
 # 存储文件夹
-data_path = hoshino.config.DATA_DIR + 'modules/cos_v2/'
+data_path = config.DATA_PATH + 'modules/cos_v2/'
 
 # 填写你的本地涩图文件夹路径
-cos_path = hoshino.config.RES_DIR + 'img/cos/'
+cos_path = config.IMAGE_PATH + 'cos/'
 
 
 class Util:

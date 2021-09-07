@@ -14,7 +14,8 @@ check_url = "https://v2.alapi.cn/api/censor/text"
 
 index = 0
 
-anime_data = json.load(open(config.DATA_DIR + "anime.json", "r", encoding="utf8"))
+data_path = config.DATA_PATH + 'modules/aichat/anime.json'
+anime_data = json.load(open(data_path, "r", encoding="utf8"))
 
 
 # 图灵AI

@@ -1,9 +1,9 @@
 import json
 import os
-from hoshino.config.path_config import DATA_PATH
+from hoshino import config
 
 # 存储文件夹
-data_path = DATA_PATH + 'modules/roulette/'
+data_path = config.DATA_PATH + 'modules/roulette/'
 
 
 class Data:

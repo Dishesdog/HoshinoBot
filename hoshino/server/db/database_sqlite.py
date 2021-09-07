@@ -1,4 +1,4 @@
-from hoshino.config import DATA_DIR
+from hoshino import config
 from tortoise import Tortoise
 import sqlite3
 
@@ -13,11 +13,11 @@ async def db_init():
                 "connections": {
                     "data": {
                         "engine": "tortoise.backends.sqlite",
-                        "credentials": {"file_path": f"{DATA_DIR}data.db"},
+                        "credentials": {"file_path": f"{config.DATA_PATH}data.db"},
                     },
                     "illust": {
                         "engine": "tortoise.backends.sqlite",
-                        "credentials": {"file_path": f"{DATA_DIR}illust.db"},
+                        "credentials": {"file_path": f"{config.DATA_PATH}illust.db"},
                     },
                 },
                 "apps": {
