@@ -85,7 +85,7 @@ async def remake(bot, ev: CQEvent):
             "type": "node",
             "data": {
                 "name": "色图机器人",
-                "uin": "2854196310",
+                "uin": "2289875995",
                 "content": img
             }
         }
