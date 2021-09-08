@@ -2,11 +2,12 @@ from .AgeManager import WeightedEvent
 from typing import Dict, Iterator, List, Set
 from .Event import Event
 
+
 class EventManager:
 
     @staticmethod
     def load(config):
-        EventManager._events: Dict[int, Event] = dict((int(k), Event(config[k]))for k in config)
+        EventManager._events: Dict[int, Event] = dict((int(k), Event(config[k])) for k in config)
         for k in EventManager._events:
             for b in EventManager._events[k].branch:
                 b.evt = EventManager._events[b.id]
@@ -24,7 +25,7 @@ class EventManager:
             rnd -= ev.weight
             if rnd <= 0: return ev.evt
         return events[0].evt
-    
+
     def _runEvent(self, event: Event) -> Iterator[str]:
         self.triggered.add(event.id)
         return event.runEvent(self._base.property, self._runEvent)

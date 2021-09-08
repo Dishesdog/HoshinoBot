@@ -1,6 +1,7 @@
 from typing import Dict, List, Set, Iterator
 from .Talent import Talent
 
+
 class TalentManager:
     grade_count = 4
     grade_prob = [0.889, 0.1, 0.01, 0.001]
@@ -9,7 +10,7 @@ class TalentManager:
     def load(config):
         TalentManager._talents: Dict[int, List[Talent]] = dict([(i, []) for i in range(TalentManager.grade_count)])
         TalentManager.talentDict: Dict[int, Talent] = dict()
-        
+
         for k in config.keys():
             t = Talent(config[k])
             TalentManager._talents[t.grade].append(t)
@@ -28,7 +29,7 @@ class TalentManager:
             result -= 1
             rnd -= TalentManager.grade_prob[result]
         return result
-    
+
     def genTalents(self, count: int) -> Iterator[Talent]:
         # should not repeats
         counts = dict([(i, 0) for i in range(TalentManager.grade_count)])

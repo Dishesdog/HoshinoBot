@@ -9,13 +9,16 @@ from .TalentManager import TalentManager
 import random
 import itertools
 
+
 class HandlerException(Exception):
     def __init__(self, msg):
         super().__init__(msg)
 
+
 class Life:
     talent_randomized = 20
     talent_choose = 5
+
     @staticmethod
     def load(datapath):
         with open(os.path.join(datapath, 'talents.json'), encoding='utf8') as fp:
@@ -45,12 +48,14 @@ class Life:
         ret chosen talent ids (will be called couple of times)
         '''
         self._errorhandler = handler
+
     def setTalentHandler(self, handler: Callable[[List[Talent]], int]) -> None:
         '''
         handler recv randomized talents
         ret chosen talent ids (will be called couple of times)
         '''
         self._talenthandler = handler
+
     def setPropertyhandler(self, handler: Callable[[int], List[int]]) -> None:
         '''
         handler recv total props
@@ -58,8 +63,9 @@ class Life:
         '''
         self._propertyhandler = handler
 
-    def _alive(self): 
+    def _alive(self):
         return self.property.LIF > 0
+
     def run(self) -> Iterator[List[str]]:
         '''
         returns: information splited by day
@@ -69,9 +75,9 @@ class Life:
             for t in self.age.getTalents(): self.talent.addTalent(t)
 
             yield list(itertools.chain(self._prefix(),
-                self.talent.updateTalent(),
-                self.event.runEvents(self.age.getEvents())))
-    
+                                       self.talent.updateTalent(),
+                                       self.event.runEvents(self.age.getEvents())))
+
     def choose(self):
         talents = list(self.talent.genTalents(Life.talent_randomized))
         tdict = dict((t.id, t) for t in talents)
@@ -89,16 +95,16 @@ class Life:
                 tdict.pop(t.id)
             except Exception as e:
                 self._errorhandler(e)
-        
+
         self.talent.updateTalentProp()
-        
+
         while True:
             try:
                 eff = self._propertyhandler(self.property.total)
                 pts = [eff[k] for k in eff]
                 if sum(pts) != self.property.total or max(pts) > 10 or min(pts) < 0:
                     return False
-                    #raise HandlerException(f'property allocation points incorrect')
+                    # raise HandlerException(f'property allocation points incorrect')
                 self.property.apply(eff)
                 break
             except Exception as e:

@@ -1,6 +1,7 @@
 from typing import List
 from .Talent import Talent
 
+
 class WeightedEvent:
     def __init__(self, o: str):
         if '*' not in o:
@@ -10,6 +11,7 @@ class WeightedEvent:
             s = o.split('*')
             self.weight: float = float(s[1])
             self.evt: int = int(s[0])
+
 
 class AgeManager:
     @staticmethod
@@ -24,16 +26,16 @@ class AgeManager:
 
     def _getnow(self):
         return AgeManager._ages[str(self._base.property.AGE)]
-    
+
     def getEvents(self) -> List[WeightedEvent]:
         now = self._getnow()
         if 'event' in now: return now['event']
         return []
-    
+
     def getTalents(self) -> List[Talent]:
         now = self._getnow()
         if 'talent' in now: return now['talent']
         return []
-    
+
     def grow(self):
         self._base.property.AGE += 1

@@ -44,7 +44,7 @@ async def remake(bot, ev: CQEvent):
     pic_list = []
     mes_list = []
 
-    Life.load(join(FILE_PATH, 'data'))
+    Life.load(join(FILE_PATH, '/data'))
     while True:
         life = Life()
         life.setErrorHandler(lambda e: traceback.print_exc())
