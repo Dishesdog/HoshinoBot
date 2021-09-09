@@ -502,31 +502,31 @@
     "1059": {
         "id": "1059",
         "name": "理财达人",
-        "description": "40岁时家境+3",
-        "condition": "AGE?[40]",
+        "description": "30、40、50岁时家境+1",
+        "condition": "AGE?[30,40,50]",
         "grade": 0,
         "effect": {
-            "MNY": 3
+            "MNY": 1
         }
     },
     "1060": {
         "id": "1060",
         "name": "成熟",
-        "description": "18岁时智力+2",
-        "condition": "AGE?[18]",
+        "description": "12、18岁时智力+1",
+        "condition": "AGE?[12,18]",
         "grade": 1,
         "effect": {
-            "INT": 2
+            "INT": 1
         }
     },
     "1061": {
         "id": "1061",
         "name": "形象管理",
-        "description": "24岁时颜值+2",
-        "condition": "AGE?[24]",
+        "description": "16、24岁时颜值+1",
+        "condition": "AGE?[16,24]",
         "grade": 1,
         "effect": {
-            "CHR": 2
+            "CHR": 1
         }
     },
     "1062": {
@@ -1156,18 +1156,18 @@
         "id": 1132,
         "name": "返老还童",
         "description": "可能会回到年轻的时候",
-        "grade": 1
+        "grade": 2
     },
     "1133": {
         "id": 1133,
         "name": "时光倒流",
         "description": "或许时间会倒流",
-        "grade": 0
+        "grade": 1
     },
     "1134": {
         "id": 1134,
         "name": "转世重修",
         "description": "渡劫失败重生",
-        "grade": 2
+        "grade": 3
     }
 }
