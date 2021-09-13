@@ -89,6 +89,13 @@ class PropertyManager:
         self.STR = 0  # 体质 strength STR
         self.MNY = 0  # 家境 money MNY
         self.SPR = 5  # 快乐 spirit SPR
+        self.CHR_JUDGE = '地狱'  #
+        self.INT_JUDGE = '地狱'  #
+        self.STR_JUDGE = '地狱'  #
+        self.MNY_JUDGE = '地狱'  #
+        self.SPR_JUDGE = '地狱'  #
+        self.AGE_JUDGE = '胎死腹中'  #
+        self.TOTAL_JUDGE = '地狱'  #
 
         self.AGE = -1
         self.LIF = 1  # hp
@@ -107,66 +114,46 @@ class PropertyManager:
         for key in effect:
             setattr(self, key, getattr(self, key) + effect[key])
 
-    def gensummary(self):
-        summary = '==人生总结==\n\n'
-
-        judge = '地狱'
+    def getSummary(self):
         for res in sum_data['CHR']:
             if self.CHR >= res["min"]:
-                judge = res["judge"]
+                self.CHR_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "颜值:  " + str(self.CHR) + "  " + judge + "\n"
 
-        judge = '地狱'
         for res in sum_data['INT']:
             if self.INT >= res["min"]:
-                judge = res["judge"]
+                self.INT_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "智力:  " + str(self.INT) + "  " + judge + "\n"
 
-        judge = '地狱'
         for res in sum_data['STR']:
             if self.STR >= res["min"]:
-                judge = res["judge"]
+                self.STR_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "体质:  " + str(self.STR) + "  " + judge + "\n"
 
-        judge = '地狱'
         for res in sum_data['MNY']:
             if self.MNY >= res["min"]:
-                judge = res["judge"]
+                self.MNY_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "家境:  " + str(self.MNY) + "  " + judge + "\n"
 
-        judge = '地狱'
         for res in sum_data['SPR']:
             if self.SPR >= res["min"]:
-                judge = res["judge"]
+                self.SPR_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "快乐:  " + str(self.SPR) + "  " + judge + "\n"
 
-        judge = '胎死腹中'
         for res in sum_data['AGE']:
             if self.AGE >= res["min"]:
-                judge = res["judge"]
+                self.AGE_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "享年:  " + str(self.AGE) + "  " + judge + "\n"
 
-        summary = summary + '\n'
-
-        judge = '地狱'
-        sum = int((self.CHR + self.INT + self.STR + self.MNY + self.SPR) * 2 + self.AGE / 2)
+        total = int((self.CHR + self.INT + self.STR + self.MNY + self.SPR) * 2 + self.AGE / 2)
         for res in sum_data['SUM']:
-            if sum >= res["min"]:
-                judge = res["judge"]
+            if total >= res["min"]:
+                self.TOTAL_JUDGE = res["judge"]
             else:
                 break
-        summary = summary + "总评:  " + str(sum) + "  " + judge + "\n"
-
-        return summary

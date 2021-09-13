@@ -40,7 +40,7 @@ class Life:
         self.event: EventManager = EventManager(self, self._rnd)
 
     def _prefix(self) -> Iterator[str]:
-        yield f'[AGE={self.property.AGE}]'
+        yield f'[{self.property.AGE}岁]'
 
     def setErrorHandler(self, handler: Callable[[Exception], None]) -> None:
         '''
