@@ -149,6 +149,7 @@ async def restart(bot, ev: CQEvent):
     tmp = tmp.replace('[MNY]', str(life.property.MNY))  # 家境 money MNY
     tmp = tmp.replace('[SPR]', str(life.property.SPR))  # 快乐 spirit SPR
     tmp = tmp.replace('[AGE]', str(life.property.AGE))  # 年龄 age AGE
+    tmp = tmp.replace('[SUM]', str(life.property.SUM))  # 年龄 age AGE
 
     life.property.getSummary()
 
@@ -158,6 +159,7 @@ async def restart(bot, ev: CQEvent):
     tmp = tmp.replace('[MNY_JUDGE]', str(life.property.MNY_JUDGE))  # 家境 money MNY
     tmp = tmp.replace('[SPR_JUDGE]', str(life.property.SPR_JUDGE))  # 快乐 spirit SPR
     tmp = tmp.replace('[AGE_JUDGE]', str(life.property.AGE_JUDGE))  # 年龄 age AGE
+    tmp = tmp.replace('[TOTAL_JUDGE]', str(life.property.TOTAL_JUDGE))  # 年龄 age AGE
 
     with open(f"{TEMPLATE_PATH}/lifeRestart/temp/{filename}.html", "w", encoding="utf-8") as f:
         f.write(tmp)

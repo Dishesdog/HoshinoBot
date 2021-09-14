@@ -89,6 +89,7 @@ class PropertyManager:
         self.STR = 0  # 体质 strength STR
         self.MNY = 0  # 家境 money MNY
         self.SPR = 5  # 快乐 spirit SPR
+        self.SUM = 0  # 快乐 spirit SPR
         self.CHR_JUDGE = '地狱'  #
         self.INT_JUDGE = '地狱'  #
         self.STR_JUDGE = '地狱'  #
@@ -151,9 +152,9 @@ class PropertyManager:
             else:
                 break
 
-        total = int((self.CHR + self.INT + self.STR + self.MNY + self.SPR) * 2 + self.AGE / 2)
+        self.SUM = int((self.CHR + self.INT + self.STR + self.MNY + self.SPR) * 2 + self.AGE / 2)
         for res in sum_data['SUM']:
-            if total >= res["min"]:
+            if self.SUM >= res["min"]:
                 self.TOTAL_JUDGE = res["judge"]
             else:
                 break
