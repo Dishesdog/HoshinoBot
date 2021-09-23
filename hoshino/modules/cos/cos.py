@@ -73,8 +73,9 @@ async def getPic(bot, ev):
         EXCEED_NOTICE = f'你已经冲过{_max}次了，求管理给你重置次数吧！'
         await bot.send(ev, EXCEED_NOTICE, at_sender=True)
         return
-    if not _fLmt.check(uid):
-        await bot.send(ev, f"你不需要休息么", at_sender=True)
+    # 群控
+    if not _fLmt.check(gid):
+        await bot.send(ev, f"不需要休息么", at_sender=True)
         return
 
     if not priv.check_priv(ev, priv.SUPERUSER):
