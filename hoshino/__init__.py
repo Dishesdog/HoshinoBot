@@ -4,10 +4,9 @@ import nonebot
 from nonebot.message import CanceledException
 from nonebot import Message, MessageSegment, message_preprocessor
 
-from . import log, config
-
 HoshinoBot = nonebot.NoneBot
 
+from . import log, config, util
 from .service import Service, sucmd
 
 __version__ = '2.2.0'
@@ -23,6 +22,7 @@ def init() -> HoshinoBot:
     _bot = nonebot.get_bot()
     _bot.finish = _finish
     _bot.get_self_ids = get_self_ids
+    _bot.silence = util.silence
 
     from .log import error_handler, critical_handler
     nonebot.logger.addHandler(error_handler)
