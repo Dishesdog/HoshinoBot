@@ -90,6 +90,7 @@ class PropertyManager:
         self.STR = 0  # 体质 strength STR
         self.MNY = 0  # 家境 money MNY
         self.SPR = 5  # 快乐 spirit SPR
+        self.SUM = 0
 
         self.CHR_JUDGE = '地狱'  #
         self.INT_JUDGE = '地狱'  #
