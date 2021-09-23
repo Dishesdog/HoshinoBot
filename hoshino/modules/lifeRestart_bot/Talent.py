@@ -17,7 +17,7 @@ class Talent:
         return talent.id in self._exclusive or self.id in talent._exclusive
 
     def __str__(self) -> str:
-        return f'Talent(name={self.name}, desc={self.desc})'
+        return f'{self.name}（{self.desc}）'
 
     def _checkCondition(self, prop) -> bool:
         return self._cond(prop)

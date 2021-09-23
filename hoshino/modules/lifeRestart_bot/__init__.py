@@ -15,96 +15,34 @@ sv = Service("人生重来模拟器")
 
 
 def genp(prop):
+    if prop < 1:
+        return {'CHR': 0, 'INT': 0, 'STR': 0, 'MNY': 0}
     ps = []
-    for _ in range(4):
-        num = 0
-        if prop > 0:
-            num = random.randrange(1, 10)
-        if num > prop:
-            num = prop
-        if len(ps) == 3:
-            num = prop
-            if prop > 10:
-                min_idx = ps.index(min(ps))
-                ps[min_idx] += prop - 10
-                num = 10
-        prop -= num
-        ps.append(num)
+    for i in range(3):
+        ps.append(id(i) % (int(prop * 2 / (4 - i)) + 1))
+        if 10 < ps[-1]:
+            ps[-1] = 10
+        prop -= ps[-1]
+    if 10 < prop:
+        prop += sum(ps)
+        ps = [int(prop / 4)] * 3
+        prop -= sum(ps)
     return {
         'CHR': ps[0],
         'INT': ps[1],
         'STR': ps[2],
-        'MNY': ps[3]
+        'MNY': prop
     }
-
-
-#
-# @sv.on_fullmatch(("/remake", "人生重来"))
-# async def remake(bot, ev: CQEvent):
-#     pic_list = []
-#     mes_list = []
-#
-#     Life.load(join(FILE_PATH, 'data'))
-#     while True:
-#         life = Life()
-#         life.setErrorHandler(lambda e: traceback.print_exc())
-#         life.setTalentHandler(lambda ts: random.choice(ts).id)
-#         life.setPropertyhandler(genp)
-#         flag = life.choose()
-#         if flag:
-#             break
-#
-#     name = ev["sender"]['card'] or ev["sender"]["nickname"]
-#     choice = 0
-#     person = name + "本次重生的基本信息如下：\n\n【你的天赋】\n"
-#     for t in life.talent.talents:
-#         choice = choice + 1
-#         person = person + str(choice) + "、天赋：【" + t.name + "】" + " 效果:" + t.desc + "\n"
-#
-#     person = person + "\n【基础属性】\n"
-#     person = person + "   美貌值:" + str(life.property.CHR) + "  "
-#     person = person + "智力值:" + str(life.property.INT) + "  "
-#     person = person + "体质值:" + str(life.property.STR) + "  "
-#     person = person + "财富值:" + str(life.property.MNY) + "  "
-#     pic_list.append("这是" + name + "本次轮回的基础属性和天赋:")
-#     pic_list.append(ImgText(person).draw_text())
-#
-#     await bot.send(ev, "你的命运正在重启....", at_sender=True)
-#
-#     res = life.run()  # 命运之轮开始转动
-#     mes = '\n'.join('\n'.join(x) for x in res)
-#     pic_list.append("这是" + name + "本次轮回的生平:")
-#     pic_list.append(ImgText(mes).draw_text())
-#
-#     sum = life.property.gensummary()  # 你的命运之轮到头了
-#     pic_list.append("这是" + name + "本次轮回的评价:")
-#     pic_list.append(ImgText(sum).draw_text())
-#
-#     for img in pic_list:
-#         data = {
-#             "type": "node",
-#             "data": {
-#                 "name": "色图机器人",
-#                 "uin": "2289875995",
-#                 "content": img
-#             }
-#         }
-#         mes_list.append(data)
-#
-#     await bot.send_group_forward_msg(group_id=ev['group_id'], messages=mes_list)
 
 
 @sv.on_fullmatch(("人生重启", "人生重来"))
 async def restart(bot, ev: CQEvent):
     Life.load(join(FILE_PATH, 'data'))
-    while True:
-        life = Life()
-        life.setErrorHandler(lambda e: traceback.print_exc())
-        life.setTalentHandler(lambda ts: random.choice(ts).id)
-        life.setPropertyhandler(genp)
-        flag = life.choose()
-        if flag:
-            break
+    life = Life()
+    life.setErrorHandler(lambda e: traceback.print_exc())
+    life.setTalentHandler(lambda ts: random.choice(ts).id)
+    life.setPropertyhandler(genp)
+    life.choose()
 
     user_id = ev["sender"]['user_id']
     filename = f"temp-card-{user_id}"
