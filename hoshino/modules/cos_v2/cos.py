@@ -44,7 +44,9 @@ async def check_local_status(bot, ev):
     msg = '这也是你能干的事？速速爬!!'
     if priv.check_priv(ev, priv.SUPERUSER):
         Util.generate()
-    await bot.send(ev, msg)
+        await bot.send(ev, "构建成功")
+    else:
+        await bot.send(ev, msg)
 
 
 @sv.on_fullmatch('cos状态')
