@@ -31,7 +31,7 @@ async def handnews(bot: HoshinoBot, ev: CQEvent):
         sv.logger.error(f'daily news error {info["msg"]}')
 
 
-@sv.scheduled_job('cron', hour='19', minute='22')
+@sv.scheduled_job('cron', hour='09', minute='30')
 async def autonews():
     try:
         info = await aiorequests.get('http://dwz.2xb.cn/zaob')
