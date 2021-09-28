@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>管理</title>
+    <meta name='viewport' content='width=380' charset="utf-8"/>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.0/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.0/theme-chalk/index.css">
+    <style>
+        .el-header {
+            background-color: #B3C0D1;
+            color: #333;
+            line-height: 60px;
+        }
+
+        .el-aside {
+            color: #333;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<el-container id="app" style=" border: 1px solid #eee">
+    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+        <el-menu>
+            <el-menu-item index="1">
+                <el-link href="/manager">首页</el-link>
+            </el-menu-item>
+            <el-menu-item index="2">
+                <el-link href="/group">按群管理</el-link>
+            </el-menu-item>
+            <el-menu-item index="3" v->
+                <el-link href="/service">按插件管理</el-link>
+            </el-menu-item>
+        </el-menu>
+    </el-aside>
+
+    <el-container>
+        <el-header style="text-align: left;">
+            <span>{{ sv_name }}</span>
+            <el-button type="primary" size="small" @click="onSubmit">保存</el-button>
+        </el-header>
+        <el-main>
+            <el-page-header @back="location='../service'" content="插件管理"></el-page-header>
+            <el-table :data="groupData">
+                <el-table-column prop="group_id" label="群号" width="150"></el-table-column>
+                <el-table-column prop="group_name" label="群名称" width="150"></el-table-column>
+                <el-table-column prop="radio" label="状态" width="200">
+                    <template slot-scope="scope">
+                        <el-switch
+                                v-model="confMap[scope.row.group_id]"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-value="1"
+                                inactive-value="0">
+                        </el-switch>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-main>
+    </el-container>
+</el-container>
+
+
+<div id="app">
+
+</div>
+
+</body>
+
+</html>
+
+<script>
+    let items = "{{ groups }}";
+    let confMap = "{{ conf }}";
+    let sv_name = "{{ sv_name }}";
+
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            groupData: eval('(' + items + ')'),
+            confMap: eval('(' + confMap + ')')
+        },
+        methods: {
+            post: function (url, params) {
+                //创建form表单
+                const temp_form = document.createElement("form");
+                temp_form.action = url;
+                temp_form.method = "post";
+                temp_form.style.display = "none";
+                //添加参数
+                for (const key in params) {
+                    const opt = document.createElement("textarea");
+                    opt.name = key;
+                    opt.value = params[key];
+                    temp_form.appendChild(opt);
+                }
+                document.body.appendChild(temp_form);
+                //提交数据
+                temp_form.submit();
+            },
+            onSubmit: function () {
+                let conf = {}
+                for (let i in this.confMap) {
+                    conf[i] = {}
+                    conf[i][sv_name] = this.confMap[i] === "1"
+                }
+                console.log(conf)
+                let request = new XMLHttpRequest();
+                request.onload = function () {
+                    if (request.status === 200) {
+                        alert('设置成功');
+                    } else {
+                        alert('exception');
+                    }
+                };
+                request.open('POST', '/set');
+                request.send(JSON.stringify(conf));
+            }
+        }
+    })
+</script>

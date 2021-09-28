@@ -42,7 +42,7 @@ async def login():
             session['user_ip'] = user_ip
             session.permanent = True
             app.permanent_session_lifetime = timedelta(weeks=2)
-            return redirect('/manager')
+            return redirect('/group')
         else:
             return redirect('/login')
 
@@ -69,10 +69,13 @@ async def show_all_services():
 async def show_group_services(gid_str: str):
     gid = int(gid_str)
     svs = Service.get_loaded_services()
-    conf = {}
-    conf[gid_str] = {}
+    conf = []
     for key in svs:
-        conf[gid_str][key] = svs[key].check_enabled(gid)
+        item = {
+            'name': key,
+            'status': '1' if svs[key].check_enabled(gid) is True else '0'
+        }
+        conf.append(item)
     return await render_template('group_services.html', group_id=gid_str, conf=conf, public_address=public_address,
                                  port=port)
 
@@ -85,11 +88,9 @@ async def show_service_groups(sv_name: str):
     for group in groups:
         gid = group['group_id']
         gid_str = str(gid)
-        conf[gid_str] = {}
+        conf[gid_str] = '0'
         if svs[sv_name].check_enabled(gid):
-            conf[gid_str][sv_name] = True
-        else:
-            conf[gid_str][sv_name] = False
+            conf[gid_str] = '1'
     return await render_template('service_groups.html', sv_name=sv_name, conf=conf, groups=groups,
                                  public_address=public_address, port=port)
 
