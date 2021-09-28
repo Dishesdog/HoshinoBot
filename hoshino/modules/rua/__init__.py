@@ -1,13 +1,10 @@
 import re
 from io import BytesIO
 from os import path
-
 from PIL import Image
-
 from hoshino import Service, aiorequests, priv
 from hoshino.typing import HoshinoBot, CQEvent
-from .data_source import generate_gif
-from .._res import Res as R
+from .data_source import generate_gif, image
 
 sv_help = '''
 [@人 rua]
@@ -40,5 +37,5 @@ async def creep(bot: HoshinoBot, ev: CQEvent):
     resp_cont = await resp.content
     avatar = Image.open(BytesIO(resp_cont))
     output = generate_gif(data_dir, avatar)
-    print(output)
-    await bot.send(ev, R.image(output))
+
+    await bot.send(ev, image(output))

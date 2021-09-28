@@ -1,6 +1,25 @@
 from os import path
 
 from PIL import Image, ImageDraw
+from nonebot.message import MessageSegment
+
+base_dir = path.join(path.dirname(__file__), 'res')
+image_dir = path.join(base_dir, 'img')
+record_dir = path.join(base_dir, 'record')
+img_cache_dir = path.join(image_dir, 'cache')
+
+
+def check_exist(res_path: str) -> bool:
+    return path.exists(res_path)
+
+
+def image(pic_path: str):
+    if check_exist(pic_path):
+        return MessageSegment.image(f'file:///{pic_path}')
+    elif check_exist(path.join(image_dir, pic_path)):
+        return MessageSegment.image(f'file:///{path.join(image_dir, pic_path)}')
+    else:
+        return '【图片丢了】'
 
 
 def get_circle_avatar(avatar, size):
@@ -16,7 +35,7 @@ def get_circle_avatar(avatar, size):
     return ret_img
 
 
-def generate_gif(frame_dir: str, avatar: Image.Image) -> Image.Image:
+def generate_gif(frame_dir: str, avatar: Image.Image):
     avatar_size = [(350, 350), (372, 305), (395, 283), (380, 305), (350, 372)]
     avatar_pos = [(50, 150), (28, 195), (5, 217), (5, 195), (50, 128)]
     imgs = []
