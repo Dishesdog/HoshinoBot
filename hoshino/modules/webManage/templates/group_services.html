@@ -13,7 +13,6 @@
         .el-header {
             background-color: #B3C0D1;
             color: #333;
-            line-height: 60px;
         }
 
         .el-aside {
@@ -27,11 +26,8 @@
 
 
 <el-container id="app" style=" border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+    <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
         <el-menu>
-            <el-menu-item index="1">
-                <el-link href="/manager">首页</el-link>
-            </el-menu-item>
             <el-menu-item index="2">
                 <el-link href="/group">按群管理</el-link>
             </el-menu-item>
@@ -47,7 +43,6 @@
             <el-button type="primary" size="small" @click="onSubmit">保存</el-button>
         </el-header>
         <el-main>
-            <el-page-header @back="location='../group'" content="插件管理"></el-page-header>
             <el-table :data="groupData">
                 <el-table-column prop="name" label="名称" width="150"></el-table-column>
                 <el-table-column prop="radio" label="状态" width="200">
