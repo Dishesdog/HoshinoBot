@@ -18,7 +18,7 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name='词云',  # 功能名
+    name='WordCloud',  # 功能名
     use_priv=priv.NORMAL,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
     visible=True,  # 是否可见
@@ -35,15 +35,9 @@ tyc_path = os.path.join(os.path.dirname(__file__), 'tyc.txt')
 font_path = os.path.join(os.path.dirname(__file__), 'SimHei.ttf')
 
 
-# 定时任务
-@sv.scheduled_job('cron', day='*', hour='23', minute='55')
-async def autoSend():
-    bot = nonebot.get_bot()
-    today = datetime.date.today().__format__('%Y-%m-%d')
-    try:
-        makeFile(today)
-    except Exception as e:
-        await bot.send_private_msg(user_id=hoshino.config.SUPERUSERS[2], message=f'{today}词云生成失败,失败原因:{e}')
+@sv.on_fullmatch(["帮助-词云"])
+async def helper(bot, ev):
+    await bot.send(ev, sv_help)
 
 
 @sv.on_fullmatch('生成今日词云')
@@ -111,3 +105,14 @@ def random_color_func(word=None, font_size=None, position=None, orientation=None
     if random_state is None:
         random_state = random
     return "hsl(%d, 75%%, 62%%)" % random_state.randint(0, 225)  # 值，饱和度，色相
+
+
+# 定时任务
+@sv.scheduled_job('cron', day='*', hour='23', minute='55')
+async def autoSend():
+    bot = nonebot.get_bot()
+    today = datetime.date.today().__format__('%Y-%m-%d')
+    try:
+        makeFile(today)
+    except Exception as e:
+        await bot.send_private_msg(user_id=hoshino.config.SUPERUSERS[2], message=f'{today}词云生成失败,失败原因:{e}')

@@ -22,7 +22,7 @@ sv = Service(
 
 
 @sv.on_fullmatch(["帮助-坎公工会战"])
-async def help_cos_v2(bot, ev):
+async def helper(bot, ev):
     await bot.send(ev, sv_help)
 
 
