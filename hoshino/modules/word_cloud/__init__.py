@@ -18,10 +18,9 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name='WordCloud',  # 功能名
+    name='词云',  # 功能名
     use_priv=priv.NORMAL,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
-    visible=True,  # 是否可见
     enable_on_default=True,  # 是否默认启用
     bundle='娱乐',  # 属于哪一类
     help_=sv_help  # 帮助文本
