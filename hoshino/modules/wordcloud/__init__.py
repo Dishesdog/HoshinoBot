@@ -1,14 +1,16 @@
-import jieba
+import datetime
+import os
+import random
 import re
+
+import jieba
 import nonebot
 import wordcloud
-import hoshino
-from hoshino.typing import CQEvent
-from hoshino import Service, R, priv, config
 from nonebot import MessageSegment
-import datetime
-import random
-import os
+
+import hoshino
+from hoshino import Service, priv, priv, config
+from hoshino.typing import CQEvent
 
 sv_help = '''
 - [词云]
