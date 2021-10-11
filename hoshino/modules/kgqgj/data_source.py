@@ -13,7 +13,6 @@ from hoshino.server.db.utils.point import add_random_points
 # https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=
 # https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=2021-10-10
 
-
 headers = {
     'Connection': 'keep-alive',
     'Cache-Control': 'max-age=0',
@@ -50,5 +49,3 @@ async def get_report():
     async with httpx.AsyncClient(headers=headers) as client:
         resp = await client.get(url=url)
     return resp.json()["data"]["member"]
-
-
