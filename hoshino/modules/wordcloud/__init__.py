@@ -5,7 +5,7 @@ import wordcloud
 import hoshino
 from hoshino.typing import CQEvent
 from hoshino import Service, R, priv, config
-from nonebot import MessageSegment, NoticeSession
+from nonebot import MessageSegment
 import datetime
 import random
 import os
@@ -33,12 +33,8 @@ tyc_path = os.path.join(os.path.dirname(__file__), 'tyc.txt')
 font_path = os.path.join(os.path.dirname(__file__), 'SimHei.ttf')
 
 
-@nonebot.scheduler.scheduled_job(
-    'cron',
-    day='*',
-    hour='23',
-    minute='55'
-)
+# 定时任务
+@sv.scheduled_job('cron', day='*', hour='23', minute='55')
 async def autoSend():
     bot = nonebot.get_bot()
     today = datetime.date.today().__format__('%Y-%m-%d')
@@ -46,14 +42,6 @@ async def autoSend():
         makeFile(today)
     except Exception as e:
         await bot.send_private_msg(user_id=hoshino.config.SUPERUSERS[2], message=f'{today}词云生成失败,失败原因:{e}')
-
-
-# @sv.on_rex(f'^查询(.*)月(\d+)日词云$')
-# async def getByDay(bot, ev: CQEvent):
-#     match = ev['match']
-#     month = int(match.group(1))
-#     day = int(match.group(2))
-#     await bot.send(ev, MessageSegment.image(f'file:///{load_in_path}/2021-{month:02}-{day:02}.png'))
 
 
 @sv.on_fullmatch('生成今日词云')
