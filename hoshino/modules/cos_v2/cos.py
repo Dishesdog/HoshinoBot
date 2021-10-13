@@ -92,7 +92,7 @@ async def getPic(bot, ev):
     try:
         await bot.send(ev, pic.cqcode)
     except CQHttpError:
-        await bot.send(ev, '发不出去勒...')
+        await bot.send(ev, '你cos给我看')
 
 
 @sv.on_prefix(('加个钟', '补魔'))
