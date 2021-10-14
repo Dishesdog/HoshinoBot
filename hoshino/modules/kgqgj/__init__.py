@@ -82,7 +82,6 @@ async def count_damage(bot, ev):
                 headers=headers,
         ) as resp:
             res = await resp.json()
-    print(res)
 
     data = res['data']
     date = data['date']
@@ -99,7 +98,10 @@ async def count_damage(bot, ev):
                 res = await resp.json()
         report = res['data']
         for item in report:
-            total[item['user_id']] = item['damage_total']
+            if item['user_id'] in total:
+                total[item['user_id']] += item['damage_total']
+            else:
+                total[item['user_id']] = 0
 
     damageTotal = []
     for user in member:
@@ -113,6 +115,8 @@ async def count_damage(bot, ev):
     damageTotal.sort(key=lambda k: (k.get('damage', 0)), reverse=True)
 
     msg = f'\t总伤害排行\n'
+    i = 0
     for damageItem in damageTotal:
-        msg += f"{damageItem['damage']} --【{damageItem['name']}】\n"
+        i = i + 1
+        msg += f"{i}\t{damageItem['damage']} --【{damageItem['name']}】\n"
     await bot.send(ev, msg)
