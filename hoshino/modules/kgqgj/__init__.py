@@ -72,7 +72,7 @@ async def get_boss_report(bot, ev):
     await bot.send(ev, msg)
 
 
-@sv.on_fullmatch('总伤害统计')
+@sv.on_fullmatch('总伤统计')
 async def count_damage(bot, ev):
     async with aiohttp.TCPConnector(verify_ssl=False) as connector:
         async with aiohttp.request(
