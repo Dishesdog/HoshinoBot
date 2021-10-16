@@ -36,6 +36,7 @@ async def get_report(bot, ev):
 
     browser = await util.browser.get_browser()
     page = await browser.new_page(extra_http_headers=headers)
+    await page.wait_for_timeout(100)
     await page.goto(path)
     await page.add_style_tag(content="body {max-width: 35.5rem;}")
     await page.add_style_tag(content=".banner-bottom {display: none;}")
