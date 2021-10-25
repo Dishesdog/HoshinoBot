@@ -9,7 +9,7 @@ from .data_source import headers
 sv_help = '''
 - [坎公工会战]
 - 报刀 - 当日会战报表
-- Boss状态 - Boss状态
+- boss状态 - Boss状态
 - 总伤统计 - 本期伤害统计
 '''.strip()
 
@@ -52,7 +52,7 @@ async def get_report(bot, ev):
     await bot.send(ev, msg)
 
 
-@sv.on_fullmatch('Boss状态')
+@sv.on_fullmatch(('Boss状态', 'boss状态', 'BOSS状态'))
 async def get_boss_report(bot, ev):
     path = 'https://www.bigfun.cn/tools/gt/boss'
 
