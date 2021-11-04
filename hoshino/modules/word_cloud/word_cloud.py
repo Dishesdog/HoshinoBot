@@ -112,6 +112,10 @@ async def autoSend():
     bot = nonebot.get_bot()
     today = datetime.date.today().__format__('%Y-%m-%d')
     try:
-        makeFile(today)
+        for gid in [776422998, 863265828]:
+            makeFile(today, gid)
+            await bot.send_group_msg(group_id=gid,
+                                     message=MessageSegment.image(f'file:///{load_in_path}/{today}-{gid}.png'))
+
     except Exception as e:
         await bot.send_private_msg(user_id=hoshino.config.SUPERUSERS[2], message=f'{today}词云生成失败,失败原因:{e}')
