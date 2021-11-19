@@ -6,7 +6,7 @@ from datetime import datetime
 import pytz
 
 import hoshino
-from hoshino import R, Service, priv, util
+from hoshino import R, Service, priv, util, config
 from hoshino.typing import CQEvent
 
 tz = pytz.timezone('Asia/Shanghai')
@@ -205,7 +205,8 @@ async def chat_clanba(bot, ev):
 @sv.on_keyword(('爬', '爪巴'))
 async def chat_clanba(bot, ev):
     if random.random() < 0.05:
-        await bot.send(ev, R.img(f"bot/爬.jpg").cqcode)
+        img = random.choice(os.listdir(config.IMAGE_PATH + "bot/pa"))
+        await bot.send(ev, R.img(f"bot/pa/{img}").cqcode)
 
 
 @sv.on_keyword('不会吧')
