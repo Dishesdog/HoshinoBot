@@ -12,6 +12,8 @@ url = "http://openapi.tuling123.com/openapi/api/v2"
 
 check_url = "https://v2.alapi.cn/api/censor/text"
 
+tx_url = "https://tbp.tencentcloudapi.com"
+
 index = 0
 
 data_path = config.DATA_PATH + 'modules/aichat/anime.json'
