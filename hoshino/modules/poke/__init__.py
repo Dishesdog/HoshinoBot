@@ -32,33 +32,22 @@ async def poke_(session: NoticeSession):
     sender_id = session.event['sender_id']
 
     msgList = [
-        "lsp你再戳？",
         "你再戳！",
         "？再戳试试？",
-        "我爪巴爪巴，球球别再戳了",
         "你戳你🐎呢？！",
-        "有事恁叫我，别天天一个劲戳戳戳！",
-        "欸很烦欸！你戳你爹呢",
         "再戳一下试试？",
         "正在关闭对您的所有服务...关闭成功",
-        "正在定位您的真实地址...定位成功。轰炸机已起飞",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
-        "傻狗，别戳了",
         "傻狗，别戳了",
     ]
     if sub_type == 'poke':
         if self_id == target_id:
-            try:
-                await session.bot.set_group_ban(group_id=group_id, user_id=sender_id, duration=120)
+            r = random.randint(0, 3)
+            if r < 3:
+                try:
+                    await session.bot.set_group_ban(group_id=group_id, user_id=sender_id, duration=120)
+                    await session.send('正在定位您的真实地址...定位成功。轰炸机已起飞')
+                except Exception as e:
+                    hoshino.logger.error(f'封禁失败：{e}')
+                    await session.send(random.choice(msgList))
+            else:
                 await session.send(random.choice(msgList))
-            except Exception as e:
-                hoshino.logger.error(f'封禁失败：{e}')
-                await session.send(random.choice(msgList))
-                return None
