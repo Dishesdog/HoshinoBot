@@ -44,7 +44,7 @@ async def poke_(session: NoticeSession):
             r = random.randint(0, 2)
             if r < 2:
                 try:
-                    await session.bot.set_group_ban(group_id=group_id, user_id=sender_id, duration=120)
+                    await session.bot.set_group_ban(group_id=group_id, user_id=sender_id, duration=60)
                     # await session.send('正在定位您的真实地址...定位成功。轰炸机已起飞')
                 except Exception as e:
                     hoshino.logger.error(f'封禁失败：{e}')
