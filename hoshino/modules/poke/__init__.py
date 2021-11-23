@@ -28,6 +28,8 @@ async def poke_(session: NoticeSession):
     sub_type = session.event['sub_type']
     self_id = session.event['self_id']
     target_id = session.event['target_id']
+    group_id = session.event['group_id']
+    sender_id = session.event['sender_id']
 
     msgList = [
         "lsp你再戳？",
@@ -53,4 +55,10 @@ async def poke_(session: NoticeSession):
     ]
     if sub_type == 'poke':
         if self_id == target_id:
-            await session.send(random.choice(msgList))
+            try:
+                await session.bot.set_group_ban(group_id=group_id, user_id=sender_id, duration=120)
+                await session.send(random.choice(msgList))
+            except Exception as e:
+                hoshino.logger.error(f'封禁失败：{e}')
+                await session.send(random.choice(msgList))
+                return None
