@@ -48,6 +48,6 @@ async def poke_(session: NoticeSession):
                     await session.send('正在定位您的真实地址...定位成功。轰炸机已起飞')
                 except Exception as e:
                     hoshino.logger.error(f'封禁失败：{e}')
-                    await session.send(random.choice(msgList))
+                    # await session.send(random.choice(msgList))
             # else:
             #     await session.send(random.choice(msgList))
