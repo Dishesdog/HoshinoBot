@@ -49,5 +49,5 @@ async def poke_(session: NoticeSession):
                 except Exception as e:
                     hoshino.logger.error(f'封禁失败：{e}')
                     await session.send(random.choice(msgList))
-            else:
-                await session.send(random.choice(msgList))
+            # else:
+            #     await session.send(random.choice(msgList))
