@@ -3,6 +3,12 @@ import aiohttp
 import random
 from hoshino import config
 
+# from tencentcloud.common import credential
+# from tencentcloud.common.profile.client_profile import ClientProfile
+# from tencentcloud.common.profile.http_profile import HttpProfile
+# from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
+# from tencentcloud.nlp.v20190408 import nlp_client, models
+
 try:
     import ujson as json
 except ImportError:
@@ -18,6 +24,27 @@ index = 0
 
 data_path = config.DATA_PATH + 'modules/aichat/anime.json'
 anime_data = json.load(open(data_path, "r", encoding="utf8"))
+
+
+# 没有回答时回复内容
+def no_result() -> str:
+    return (
+        random.choice(
+            [
+                "你在说啥子？",
+                f"纯洁的我没听懂",
+                "下次再告诉你(下次一定)",
+                "你觉得我听懂了吗？嗯？",
+                "我！不！知！道！",
+                '我现在还不太明白你在说什么呢，但没关系，以后的我会变得更强呢！',
+                '我有点看不懂你的意思呀，可以跟我聊些简单的话题嘛',
+                '其实我不太明白你的意思……',
+                '抱歉哦，我现在的能力还不能够明白你在说什么，但我会加油的～',
+                '唔……等会再告诉你'
+            ]
+        )
+        # + image(random.choice(os.listdir(IMAGE_PATH + "noresult/")), "noresult")
+    )
 
 
 # 图灵AI
@@ -63,6 +90,62 @@ async def tu_ling(text: str, user_id: int, sess: ClientSession):
                         text = ""
     return text
 
+
+# async def teng_xun(text: str, user_id: int, sess: ClientSession):
+#     if text == '':
+#         return
+#
+#     global salt
+#     if salt is None:
+#         salt = rand_string()
+#     session_id = md5((str(context['user_id']) + salt).encode()).hexdigest()
+#     param = {
+#         'app_id': app_id,
+#         'session': session_id,
+#         'question': text,
+#         'time_stamp': str(int(time())),
+#         'nonce_str': rand_string(),
+#     }
+#     sign = getReqSign(param)
+#     param['sign'] = sign
+#     async with aiohttp.request(
+#             'POST',
+#             'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat',
+#             params=param,
+#     ) as response:
+#         code = response.status
+#         if code != 200:
+#             raise ValueError(f'bad server http code: {code}')
+#         res = await response.read()
+#         # print (res)
+#         param = json.loads(res)
+#     return param['data']['answer']
+#
+#
+# def aichat(text):
+#     SecretId = config.TX_SecretId
+#     SecretKey = config.TX_SecretKey
+#
+#     cred = credential.Credential(SecretId, SecretKey)
+#     httpProfile = HttpProfile()
+#     httpProfile.endpoint = tx_url
+#
+#     clientProfile = ClientProfile()
+#     clientProfile.httpProfile = httpProfile
+#     client = nlp_client.NlpClient(cred, "ap-guangzhou", clientProfile)
+#
+#     req = models.ChatBotRequest()
+#     params = {
+#         "Query": text,
+#     }
+#     req.from_json_string(json.dumps(params))
+#
+#     resp = client.ChatBot(req)
+#     param = resp.to_json_string()
+#     reply = json.loads(param)
+#     msg = reply['Reply']
+#     return msg
+#
 
 #
 #
@@ -114,27 +197,6 @@ async def tu_ling(text: str, user_id: int, sess: ClientSession):
 #     else:
 #         result += image(img, "zai")
 #     return result
-
-
-# 没有回答时回复内容
-def no_result() -> str:
-    return (
-        random.choice(
-            [
-                "你在说啥子？",
-                f"纯洁的我没听懂",
-                "下次再告诉你(下次一定)",
-                "你觉得我听懂了吗？嗯？",
-                "我！不！知！道！",
-                '我现在还不太明白你在说什么呢，但没关系，以后的我会变得更强呢！',
-                '我有点看不懂你的意思呀，可以跟我聊些简单的话题嘛',
-                '其实我不太明白你的意思……',
-                '抱歉哦，我现在的能力还不能够明白你在说什么，但我会加油的～',
-                '唔……等会再告诉你'
-            ]
-        )
-        # + image(random.choice(os.listdir(IMAGE_PATH + "noresult/")), "noresult")
-    )
 
 
 #
