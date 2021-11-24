@@ -23,6 +23,12 @@ sv = Service(
     help_=sv_help,  # 帮助说明
 )
 
+
+@sv.on_fullmatch(["帮助-答案之书"])
+async def helper(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+
+
 path = os.path.join(os.path.dirname(__file__), "answersbook.json")
 
 
