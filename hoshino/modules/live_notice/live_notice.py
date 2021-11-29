@@ -54,7 +54,8 @@ async def check_bili_live(lv):
             sv.logger.info(f'检测到{lv.platform}{lv.room_id}直播间开播了')
 
             pic = f'[CQ:image,file={cover}]'.format(cover=cover)
-            await broadcast(f'开播提醒=========\n{pic}\n{title}\n{link}', lv.room_id)
+            at = f"[CQ:at,qq=all]"
+            await broadcast(f'开播提醒{at}\n{pic}\n{title}\n{link}', lv.room_id)
     else:
         # 未开播
         pass

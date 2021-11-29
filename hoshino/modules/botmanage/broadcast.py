@@ -1,8 +1,10 @@
 import asyncio
-
+import nonebot
 import hoshino
 from hoshino.service import sucmd
 from hoshino.typing import CommandSession, CQHttpError
+
+bot = nonebot.get_bot()
 
 
 @sucmd('broadcast', aliases=('bc', '广播'))
