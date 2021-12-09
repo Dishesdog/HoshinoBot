@@ -41,9 +41,24 @@ def getMessage(bot, userGroup):
 @sv.on_prefix('cp')
 async def entranceFunction(bot, ev):
     s = ev.message.extract_plain_text().split(' ')
+    user_id = ev.user_id
     try:
-        name = s[0]
-        name = s[1]
+        a = s[0]
+        b = s[1]
+        if a is '菜狗':
+            info = await bot.get_group_member_info(
+                group_id=ev.group_id,
+                user_id=user_id,
+                no_cache=True
+            )
+            s[0] = info['card'] or info['nickname']
+        if b is '菜狗':
+            info = await bot.get_group_member_info(
+                group_id=ev.group_id,
+                user_id=user_id,
+                no_cache=True
+            )
+            s[1] = info['card'] or info['nickname']
     except:
         return
     await bot.send(ev, getMessage(bot, s))
