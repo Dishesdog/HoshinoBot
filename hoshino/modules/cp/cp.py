@@ -45,14 +45,14 @@ async def entranceFunction(bot, ev):
     try:
         a = s[0]
         b = s[1]
-        if a is '菜狗':
+        if a == '菜狗':
             info = await bot.get_group_member_info(
                 group_id=ev.group_id,
                 user_id=user_id,
                 no_cache=True
             )
             s[0] = info['card'] or info['nickname']
-        if b is '菜狗':
+        if b == '菜狗':
             info = await bot.get_group_member_info(
                 group_id=ev.group_id,
                 user_id=user_id,
