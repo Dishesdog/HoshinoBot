@@ -28,7 +28,7 @@ headers = {
     'Sec-Fetch-User': '?1',
     'Sec-Fetch-Dest': 'document',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
-    'Cookie': 'DedeUserID=27213553; DedeUserID__ckMd5=6207d7f289613ef0; _csrf=vEVPVPyfF6OU-sh6rj3NPiqH; UM_distinctid=17ca7b5dc9a661-0c4dd1c51ff5a2-123b6650-384000-17ca7b5dc9b87e; CNZZDATA1275376637=916080164-1634899450-%7C1634899450; SESSDATA=508df785%2C1650453306%2C919c2%2Aa1; bili_jct=96aae1e292b1f118c5900a8bbe89b1e6; sid=6hvjnp9c; user-info=4363226; session-api=1ujlaprkg1usufdi5jsc8djvmv',
+    'Cookie': 'sid=huvq63d8; DedeUserID=27213553; DedeUserID__ckMd5=6207d7f289613ef0; _csrf=woI0gHdxxEkr-bxkWJ2dstqC; UM_distinctid=17daca49d3b43d-0a245f86efe6f5-133f6452-1ea000-17daca49d3d3ef; CNZZDATA1275376637=30078234-1639274403-%7C1639274403; b_lsid=E58ACD7B_17DACA4A115; buvid_fp=; SESSDATA=653e61fd%2C1654831058%2C2eeef*c1; bili_jct=9d7b15232258997b794650e158916a50; b_nut=1639279058; session-api=p9dn8ds336qah3ak35nhffhpl3; user-info=4363226',
     'If-None-Match': 'W/"9b8-nQB0z3AFrIrhUXJ6VHxxrdSRPdE"'
 }
 
