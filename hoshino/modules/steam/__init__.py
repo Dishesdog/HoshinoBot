@@ -21,7 +21,7 @@ url_specials = "https://store.steampowered.com/search/results/?l=schinese&query&
 
 sv = Service(
     name='游戏资讯',
-    use_priv=priv.SUPERUSER,  # 使用权限
+    use_priv=priv.NORMAL,  # 使用权限
     manage_priv=priv.SUPERUSER,  # 管理权限
     visible=True,  # 是否可见
     enable_on_default=True,  # 是否默认启用
