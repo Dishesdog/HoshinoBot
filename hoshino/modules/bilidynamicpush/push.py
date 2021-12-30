@@ -1,11 +1,10 @@
-from hoshino import Service, R
+from hoshino import Service
 import json
 import asyncio
 from os import path
 from hoshino import aiorequests, priv
 import time
 import nonebot
-from hoshino.priv import *
 from PIL import Image
 import random
 
@@ -58,15 +57,15 @@ async def broadcast(msg, groups=None, sv_name=None):
             sv.logger.info(e)
 
 
-def getImageCqCode(path):
-    return '[CQ:image,file={imgUrl}]'.format(imgUrl=path)
+def getImageCqCode(p):
+    return '[CQ:image,file={imgUrl}]'.format(imgUrl=p)
 
 
-def getLimitedMessage(originMsg):
-    if 0 < messageLengthLimit < len(originMsg):
-        return originMsg[0:messageLengthLimit] + '……'
+def getLimitedMessage(origin_msg):
+    if 0 < messageLengthLimit < len(origin_msg):
+        return origin_msg[0:messageLengthLimit] + '……'
     else:
-        return originMsg
+        return origin_msg
 
 
 async def loadConfig():
@@ -79,7 +78,7 @@ async def loadConfig():
     push_times = {}
     room_states = {}
     config_path = path.join(path.dirname(__file__), 'config.json')
-    with open(config_path, 'r', encoding='utf8')as fp:
+    with open(config_path, 'r', encoding='utf8') as fp:
         conf = json.load(fp)
         messageLengthLimit = conf['message_length_limit']
         keys = conf['uid_bind'].keys()
@@ -101,7 +100,7 @@ async def loadConfig():
 
 def saveConfig():
     config_path = path.join(path.dirname(__file__), 'config.json')
-    with open(config_path, 'r+', encoding='utf8')as fp:
+    with open(config_path, 'r+', encoding='utf8') as fp:
         conf = json.load(fp)
         keys = push_uids.keys()
         conf['uid_bind'].clear()
@@ -118,14 +117,14 @@ async def check_uid_exsist(uid):
         'Referer': 'https://space.bilibili.com/{user_uid}/'.format(user_uid=uid)
     }
     try:
-        resp = await aiorequests.get('http://api.bilibili.com/x/space/acc/info?mid={user_uid}'.format(user_uid=uid),
+        resp = await aiorequests.get('https://api.bilibili.com/x/space/acc/info?mid={user_uid}'.format(user_uid=uid),
                                      headers=header, timeout=20)
         res = await resp.json()
         if res['code'] == 0:
             return True
         return False
     except Exception as e:
-        sv.logger.info('B站用户检查发生错误 ' + e)
+        sv.logger.info(f'B站用户检查发生错误 {e}')
         return False
 
 
@@ -134,12 +133,12 @@ async def get_user_name(uid):
         'Referer': 'https://space.bilibili.com/{user_uid}/'.format(user_uid=uid)
     }
     try:
-        resp = await aiorequests.get('http://api.bilibili.com/x/space/acc/info?mid={user_uid}'.format(user_uid=uid),
+        resp = await aiorequests.get('https://api.bilibili.com/x/space/acc/info?mid={user_uid}'.format(user_uid=uid),
                                      headers=header, timeout=20)
         res = await resp.json()
         return res['data']['name']
     except Exception as e:
-        sv.logger.info('B站用户名获取发生错误 ' + e)
+        sv.logger.info(f'B站用户名获取发生错误 {e}')
         return False
 
 
@@ -158,11 +157,11 @@ async def subscribe_dynamic(bot, ev):
     if not text:
         await bot.send(ev, "请按照格式发送", at_sender=True)
         return
-    if not ' ' in text:  # 仅当前群组
+    if ' ' not in text:  # 仅当前群组
         if not await check_uid_exsist(text):
             await bot.send(ev, '订阅失败：用户不存在')
             return
-        if not text in push_uids:
+        if text not in push_uids:
             push_uids[text] = [str(ev.group_id)]
             room_states[text] = False
         else:
@@ -170,14 +169,14 @@ async def subscribe_dynamic(bot, ev):
                 await bot.send(ev, '订阅失败：请勿重复订阅')
                 return
             push_uids[text].append(str(ev.group_id))
-            push_times[uid] = int(time.time())
+            push_times[text] = int(time.time())
     else:
         subUid = text.split(' ')[0]
         subGroup = text.split(' ')[1]
         if not await check_uid_exsist(subUid):
             await bot.send(ev, '订阅失败：用户不存在')
             return
-        if not subUid in push_uids:
+        if subUid not in push_uids:
             push_uids[subUid] = [subGroup]
             room_states[subUid] = False
         else:
@@ -198,7 +197,7 @@ async def disubscribe_dynamic(bot, ev):
     if not text:
         await bot.send(ev, "请按照格式发送", at_sender=True)
         return
-    if not ' ' in text:  # 仅当前群组
+    if ' ' not in text:  # 仅当前群组
         sv.logger.info(text)
         sv.logger.info(push_uids.keys())
         if text in push_uids.keys():
@@ -265,7 +264,7 @@ async def check_bili_dynamic():
             # cards=[res['data']['cards'][10]]
             for card in cards:
                 sendCQCode = []
-                userUid = card['desc']['user_profile']['info']['uid']
+                # userUid = card['desc']['user_profile']['info']['uid']
                 # uname=card['desc']['user_profile']['info']['uname']
                 uname = all_user_name[uid]
                 timestamp = card['desc']['timestamp']
@@ -318,7 +317,7 @@ async def check_bili_dynamic():
                                     for downPic in pictureSrcs:
                                         sendCQCode.append(getImageCqCode(downPic))
                         if not isBigPicture:
-                            if picturesCount > 0 and picturesCount < 4:
+                            if 0 < picturesCount < 4:
                                 pictureSrcs = []
                                 for pic in pictures:
                                     pictureSrcs.append(pic['img_src'])
@@ -436,7 +435,7 @@ async def check_bili_dynamic():
                 time.sleep(0.5)
             push_times[uid] = int(time.time())
         except Exception as e:
-            sv.logger.info('B站动态检查发生错误 ' + e)
+            sv.logger.info(f'B站动态检查发生错误 {e}')
     sv.logger.info('B站动态检查结束')
     # 直播状态检查
     sv.logger.info('B站直播状态检查开始')
@@ -482,12 +481,12 @@ async def check_bili_dynamic():
                     await broadcast(msg, push_uids[uid])
             time.sleep(0.5)
         except Exception as e:
-            sv.logger.info('B站直播检查发生错误 ' + e)
+            sv.logger.info(f'B站直播检查发生错误 {e}')
     sv.logger.info('B站直播状态检查结束')
     isOnChecking = False
 
 
-async def make_big_image(image_urls, size, imageNum):
+async def make_big_image(image_urls, size, image_num):
     dirPath = path.join(path.dirname(__file__), 'res', 'image')
     for url in image_urls:  # 下载全部图片
         imageResp = await aiorequests.get(url)
@@ -496,7 +495,7 @@ async def make_big_image(image_urls, size, imageNum):
         imagePath = path.join(dirPath, imgFilename)
         with open(path.abspath(imagePath), 'wb') as f:
             f.write(image)
-    if imageNum == 9:
+    if image_num == 9:
         newImg = Image.new('RGB', (size[0] * 3, size[1] * 3), 255)
         currentImageCount = 0
         for y in range(3):
@@ -507,7 +506,7 @@ async def make_big_image(image_urls, size, imageNum):
         savePath = image_urls[0].rsplit('/', 1)[1].split('.')[0] + 'make.jpg'
         newImg.save(savePath)
         return savePath
-    if imageNum == 6:
+    if image_num == 6:
         newImg = Image.new('RGB', (size[0] * 3, size[1] * 2), 255)
         currentImageCount = 0
         for y in range(2):
