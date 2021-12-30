@@ -41,7 +41,6 @@ async def Gameinfo(bot, ev):
     try:
         mes_list = None
         model = ev.message.extract_plain_text().strip()
-        await bot.send(ev, "正在生成合并消息，请稍等片刻！", at_sender=True)
         if model == "新品":
             mes_list = crawler(url_new)
         elif model == "特惠":
