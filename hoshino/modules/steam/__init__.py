@@ -129,21 +129,21 @@ async def off_remind(bot, ev):
         save_group_list()
     await bot.send(ev, "喜加一提醒已关闭")
 
-
-# 定时检查是否有新的喜加一信息
-@sv.scheduled_job('cron', hour='*', minute='*')
-async def xjy_remind():
-    bot = get_bot()
-    url_list = xjy_compare()
-    if "Server Error" in url_list:
-        sv.logger.info("访问it之家出错，非致命错误，可忽略")
-    elif "error" in url_list:
-        sv.logger.error(url_list)
-    elif len(url_list) != 0:
-        mes = xjy_result("Default", url_list)
-        for gid in group_list:
-            await bot.send_group_msg(group_id=int(gid), message="侦测到在途的喜加一信息，即将进行推送...")
-            for i in mes:
-                await bot.send_group_msg(group_id=int(gid), message=i)
-    else:
-        sv.logger.info("无新喜加一信息")
+#
+# # 定时检查是否有新的喜加一信息
+# @sv.scheduled_job('cron', hour='*', minute='*')
+# async def xjy_remind():
+#     bot = get_bot()
+#     url_list = xjy_compare()
+#     if "Server Error" in url_list:
+#         sv.logger.info("访问it之家出错，非致命错误，可忽略")
+#     elif "error" in url_list:
+#         sv.logger.error(url_list)
+#     elif len(url_list) != 0:
+#         mes = xjy_result("Default", url_list)
+#         for gid in group_list:
+#             await bot.send_group_msg(group_id=int(gid), message="侦测到在途的喜加一信息，即将进行推送...")
+#             for i in mes:
+#                 await bot.send_group_msg(group_id=int(gid), message=i)
+#     else:
+#         sv.logger.info("无新喜加一信息")
