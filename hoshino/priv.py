@@ -19,7 +19,7 @@ WHITE = 51
 SUPERUSER = 999
 SU = SUPERUSER
 
-#===================== block list =======================#
+# ===================== block list =======================#
 _black_group = {}  # Dict[group_id, expr_time]
 _black_user = {}  # Dict[user_id, expr_time]
 
@@ -49,7 +49,7 @@ def check_block_user(user_id):
     return bool(user_id in _black_user)
 
 
-#========================================================#
+# ========================================================#
 
 
 def get_user_priv(ev: CQEvent):
@@ -68,7 +68,7 @@ def get_user_priv(ev: CQEvent):
             elif role == 'admin':
                 return ADMIN
             elif role == 'administrator':
-                return ADMIN    # for cqhttpmirai
+                return ADMIN  # for cqhttpmirai
             elif role == 'owner':
                 return OWNER
         return NORMAL
@@ -78,6 +78,8 @@ def get_user_priv(ev: CQEvent):
 
 
 def check_priv(ev: CQEvent, require: int) -> bool:
+    if int(config.SELF_ID) != ev.self_id:  # 多机器人强一致
+        return False
     if ev['message_type'] == 'group':
         return bool(get_user_priv(ev) >= require)
     else:
