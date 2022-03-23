@@ -2,6 +2,7 @@ import nonebot
 from nonebot import CommandSession
 from bilibili_api import live
 from hoshino.service import Service, priv
+import hoshino.config
 from .util import Util, BiliLive
 from hoshino.log import new_logger
 import asyncio
@@ -30,6 +31,7 @@ _subscribes, _lives = Util.generate()
 # 定时任务
 @sv.scheduled_job('cron', minute='*', second='1')
 async def check_live():
+    print(hoshino.config.SELF_ID)
     for lv in _lives:
         await check_bili_live(lv)
 

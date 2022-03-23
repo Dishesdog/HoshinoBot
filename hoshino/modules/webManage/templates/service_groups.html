@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>管理</title>
+    <title>插件</title>
     <meta name='viewport' content='width=380' charset="utf-8"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -12,6 +12,7 @@
         .el-header {
             background-color: #B3C0D1;
             color: #333;
+            line-height: 60px;
         }
 
         .el-aside {
@@ -22,52 +23,45 @@
 
 
 <body>
-
-
 <el-container id="app" style=" border: 1px solid #eee">
     <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
         <el-menu>
+            <el-menu-item index="1">
+                <el-link href="/robotInfo">机器人</el-link>
+            </el-menu-item>
             <el-menu-item index="2">
                 <el-link href="/group">按群管理</el-link>
             </el-menu-item>
-            <el-menu-item index="3" v->
+            <el-menu-item index="3">
                 <el-link href="/service">按插件管理</el-link>
             </el-menu-item>
         </el-menu>
     </el-aside>
 
-    <el-container>
-        <el-header style="text-align: left;">
+    <el-main>
+        <el-header>
             <span>{{ sv_name }}</span>
             <el-button type="primary" size="small" @click="onSubmit">保存</el-button>
         </el-header>
-        <el-main>
-            <el-table :data="groupData">
-                <el-table-column prop="group_id" label="群号" width="150"></el-table-column>
-                <el-table-column prop="group_name" label="群名称" width="150"></el-table-column>
-                <el-table-column prop="radio" label="状态" width="200">
-                    <template slot-scope="scope">
-                        <el-switch
-                                v-model="confMap[scope.row.group_id]"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                                active-value="1"
-                                inactive-value="0">
-                        </el-switch>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-main>
-    </el-container>
+        <el-table :data="groupData">
+            <!--            <el-table-column prop="group_id" label="群号" width="150"></el-table-column>-->
+            <el-table-column prop="group_name" label="群名称"></el-table-column>
+            <el-table-column prop="radio" label="状态">
+                <template slot-scope="scope">
+                    <el-switch
+                            v-model="confMap[scope.row.group_id]"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                            active-value="1"
+                            inactive-value="0">
+                    </el-switch>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-main>
 </el-container>
-
-
-<div id="app">
-
-</div>
-
+<div id="app"></div>
 </body>
-
 </html>
 
 <script>

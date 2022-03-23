@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
-    <title>群</title>
+    <title>按插件</title>
     <meta name='viewport' content='width=380' charset="utf-8"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -21,66 +20,75 @@
         }
     </style>
 </head>
-
-
 <body>
-
-
 <el-container id="app" style=" border: 1px solid #eee">
     <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
         <el-menu>
             <el-menu-item index="1">
-                <el-link href="/robotInfo">机器人</el-link>
+                <el-link href="/robot">机器人</el-link>
             </el-menu-item>
             <el-menu-item index="2">
                 <el-link href="/group">按群管理</el-link>
             </el-menu-item>
-            <el-menu-item index="3" >
+            <el-menu-item index="3">
                 <el-link href="/service">按插件管理</el-link>
             </el-menu-item>
         </el-menu>
     </el-aside>
 
     <el-main>
-        <el-header>
-            <span>{{ group_id }}</span>
-            <el-button type="primary" size="small" @click="onSubmit">保存</el-button>
-        </el-header>
-        <el-table :data="groupData">
-            <el-table-column prop="name" label="名称"></el-table-column>
-            <el-table-column prop="radio" label="状态">
-                <template slot-scope="scope">
-                    <el-switch
-                            v-model="scope.row.status"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                            active-value="1"
-                            inactive-value="0">
-                    </el-switch>
-                </template>
-            </el-table-column>
+        <el-header><span>机器人</span></el-header>
+        <el-table :data="robotData">
+            <el-table-column prop="qq" label="QQ"></el-table-column>
+            <el-table-column prop="name" label="昵称"></el-table-column>
         </el-table>
+        <el-form ref="form" :model="form" :rules="rules" label-width="0px">
+            <el-form-item prop="qq">
+                <el-input v-model="form.qq" name="qq" placeholder="启动的机器人QQ" type="text"
+                          @keyup.enter.native="onSubmit">
+                </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit" style="width: 100%;">切换</el-button>
+            </el-form-item>
+        </el-form>
     </el-main>
 </el-container>
 
 </body>
-
 </html>
-
 <script>
-    let gid = "{{ group_id }}";
-    let items = "{{ conf }}";
+    let selfId = "{{ self_id }}";
 
-    let vm = new Vue({
+    new Vue({
         el: '#app',
         data: {
-            groupData: eval('(' + items + ')')
+            robotData: [
+                {
+                    "qq": "2289875995",
+                    "name": '1号机',
+                },
+                {
+                    "qq": "2921478035",
+                    "name": "2号机",
+                }
+            ],
+            form: {
+                qq: selfId
+            },
+            rules: {
+                qq: [
+                    {required: true, message: '必须上述qq', trigger: 'blur'},
+                ],
+            }
         },
         methods: {
             post: function (url, params) {
                 //创建form表单
                 const temp_form = document.createElement("form");
                 temp_form.action = url;
+                //如需打开新窗口，form的target属性要设置为'_blank'
+                // temp_form.target = "_blank";
                 temp_form.method = "post";
                 temp_form.style.display = "none";
                 //添加参数
@@ -92,34 +100,22 @@
                 }
                 document.body.appendChild(temp_form);
                 //提交数据
+                console.log(temp_form)
                 temp_form.submit();
             },
             onSubmit: function () {
-                let conf = {}
-                let plug = {}
-                this.groupData.forEach(function (item, index) {
-                    plug[item.name] = item.status === "1"
-                })
-                console.log(plug)
-
-                conf[gid] = plug
-                let request = new XMLHttpRequest();
-                request.onload = function () {
-                    if (request.status === 200) {
-                        alert('设置成功');
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        const url = "switchRobot";
+                        this.post(url, {
+                            qq: this.form.qq
+                        });
                     } else {
-                        alert('exception');
+                        console.log('请检查输入！');
+                        return false;
                     }
-                };
-                request.open('POST', '/set');
-                request.send(JSON.stringify(conf));
+                });
             }
         }
     })
-
-    function save() {
-
-    }
-
-
 </script>

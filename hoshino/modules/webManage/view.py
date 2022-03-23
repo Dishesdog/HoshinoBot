@@ -118,6 +118,21 @@ async def set_group():
         return 'ok'
 
 
+@switcher.route('/switchRobot/', methods=['GET', 'POST'])
+async def switchRobot():
+    data = await request.form
+    qq = data.get('qq')
+    config.SELF_ID = qq
+    nonebot.init(config)
+    return redirect('/robotInfo')
+
+
+@switcher.route('/robotInfo')
+async def robotInfo():
+    self_id = config.SELF_ID
+    return await render_template('robot.html', self_id=self_id, public_address=public_address, port=port)
+
+
 @bot.on_message('private')
 async def setting(ctx):
     message = ctx['raw_message']

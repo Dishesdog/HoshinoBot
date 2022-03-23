@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>管理</title>
+    <title>按插件</title>
     <meta name='viewport' content='width=380' charset="utf-8"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -21,41 +21,38 @@
     </style>
 </head>
 
-
 <body>
-
 
 <el-container id="app" style=" border: 1px solid #eee">
     <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
         <el-menu>
+            <el-menu-item index="1">
+                <el-link href="/robotInfo">机器人</el-link>
+            </el-menu-item>
             <el-menu-item index="2">
                 <el-link href="/group">按群管理</el-link>
             </el-menu-item>
-            <el-menu-item index="3" v->
+            <el-menu-item index="3" >
                 <el-link href="/service">按插件管理</el-link>
             </el-menu-item>
         </el-menu>
     </el-aside>
 
-    <el-container>
-        <el-header style="text-align: left;">
-            <span>插件管理</span>
-        </el-header>
-        <el-main>
-            <el-table :data="groupData">
-                <el-table-column prop="group_name" label="名称" width="150">
-                    <template slot-scope="scope">
-                        <span v-html="scope.row"></span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="group_name" label="名称" width="150">
-                    <template slot-scope="scope">
-                        <a :href="'../service/' + scope.row">前往</a>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-main>
-    </el-container>
+    <el-main>
+        <el-header><span>插件管理</span></el-header>
+        <el-table :data="groupData">
+            <el-table-column prop="group_name" label="名称">
+                <template slot-scope="scope">
+                    <span v-html="scope.row"></span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="group_name" label="操作">
+                <template slot-scope="scope">
+                    <a :href="'../service/' + scope.row">前往</a>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-main>
 </el-container>
 
 </body>
