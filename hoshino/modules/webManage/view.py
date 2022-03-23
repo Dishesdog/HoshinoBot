@@ -49,7 +49,8 @@ async def login():
 
 @switcher.route('/manager')
 async def manager():
-    return await render_template('main.html', public_address=public_address, port=port)
+    return redirect('/robotInfo')
+    # return await render_template('main.html', public_address=public_address, port=port)
 
 
 @switcher.route('/group')
