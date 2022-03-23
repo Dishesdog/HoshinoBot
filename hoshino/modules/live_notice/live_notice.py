@@ -31,7 +31,6 @@ _subscribes, _lives = Util.generate()
 # 定时任务
 @sv.scheduled_job('cron', minute='*', second='1')
 async def check_live():
-    print(hoshino.config.SELF_ID)
     for lv in _lives:
         await check_bili_live(lv)
 
