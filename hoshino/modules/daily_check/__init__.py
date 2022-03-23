@@ -42,10 +42,10 @@ async def check_local_status(bot, ev):
     name = info['card'] or info['nickname']
 
     img = await get_card(name, user_id)
-
-    bio = io.BytesIO(img)
-    base64_str = 'base64://' + base64.b64encode(bio.getvalue()).decode()
-    msg = f"[CQ:image,file={base64_str}]"
+    if img is None:
+        msg = '''今日已经签到过了'''.strip()
+    else:
+        msg = f"[CQ:image,file={img}]"
     await bot.send(ev, msg)
 
 
@@ -68,7 +68,7 @@ async def get_card(user_name: str, user_id: int):
             points = await add_random_points(user_id, 20)
             template = template.replace("[points]", str(points))
         else:
-            template = template.replace("[points]", "0(已经签到过啦)")
+            return None  # 重复签到不在发图
     else:
         points = await add_random_points(user_id, 20)
         template = template.replace("[points]", str(points))
@@ -92,7 +92,9 @@ async def get_card(user_name: str, user_id: int):
     with open(f"{TEMPLATE_PATH}check_in/temp/{filename}.html", "w", encoding="utf-8") as f:
         f.write(template)
 
-    return await generate_pic(filename)
+    img = await generate_pic(filename)
+    bio = io.BytesIO(img)
+    return 'base64://' + base64.b64encode(bio.getvalue()).decode()
 
 
 async def generate_pic(filename: str):
