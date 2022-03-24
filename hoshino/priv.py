@@ -78,8 +78,8 @@ def get_user_priv(ev: CQEvent):
 
 
 def check_priv(ev: CQEvent, require: int) -> bool:
-    if int(config.SELF_ID) != ev.self_id:  # 多机器人强一致
-        return False
+    # if int(config.SELF_ID) != ev.self_id:  # 多机器人强一致
+    #     return False
     if ev['message_type'] == 'group':
         return bool(get_user_priv(ev) >= require)
     else:
