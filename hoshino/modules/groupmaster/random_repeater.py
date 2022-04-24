@@ -24,6 +24,9 @@ async def random_repeater(bot, ev: CQEvent):
     group_id = ev.group_id
     msg = str(ev.message)
 
+    if msg in ["签到", "开抢", "参与轮盘赌", "开始", "轮盘赌"]:
+        return
+
     if group_id not in group_stat:
         group_stat[group_id] = (msg, False, 0)
         return
