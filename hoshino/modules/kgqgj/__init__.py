@@ -145,7 +145,7 @@ async def damage_status(bot, ev):
             damage_num = reportMap[uid]['damage_num']
             damage_total = reportMap[uid]['damage_total']
 
-        msg += f"{damage_num}刀 -- \t {damage_total}伤害 -- \t{name}\n"
+        msg += f"{damage_num}刀 -- \t {damage_total}伤害 -- \t {name}\n"
 
     await bot.send(ev, msg)
 
