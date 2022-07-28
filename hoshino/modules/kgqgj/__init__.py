@@ -4,7 +4,7 @@ import base64
 import io
 
 from hoshino import Service, priv, util
-from .data_source import headers, get_member, get_report
+from .data_source import headers, get_member, today_report
 
 sv_help = '''
 - [坎公工会战]
@@ -124,11 +124,11 @@ async def count_damage(bot, ev):
 
 
 @sv.on_fullmatch('出刀状态')
-async def count_damage(bot, ev):
+async def damage_status(bot, ev):
     # 先获取用户
     member = await get_member()
     # 再获取报表
-    report = await get_report()
+    report = await today_report()
 
     reportMap = {}
     for item in report:

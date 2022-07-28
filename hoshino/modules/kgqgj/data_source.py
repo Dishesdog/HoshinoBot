@@ -50,7 +50,7 @@ async def get_member():
 
 
 #  当日报刀
-async def get_report():
+async def today_report():
     async with aiohttp.TCPConnector(verify_ssl=False) as connector:
         async with aiohttp.request(
                 method='GET',
