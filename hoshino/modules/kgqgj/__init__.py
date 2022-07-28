@@ -4,7 +4,7 @@ import base64
 import io
 
 from hoshino import Service, priv, util
-import data_source
+from .data_source import get_member, get_boss_info, today_report,headers
 
 sv_help = '''
 - [坎公工会战]
@@ -35,7 +35,7 @@ async def get_report(bot, ev):
     path = 'https://www.bigfun.cn/tools/gt/t_report'
 
     browser = await util.browser.get_browser()
-    page = await browser.new_page(extra_http_headers=data_source.headers)
+    page = await browser.new_page(extra_http_headers=headers)
     await page.goto(path)
     await page.wait_for_timeout(100)
     await page.add_style_tag(content="body {max-width: 35.5rem;}")
@@ -57,7 +57,7 @@ async def get_boss_report(bot, ev):
     path = 'https://www.bigfun.cn/tools/gt/boss'
 
     browser = await util.browser.get_browser()
-    page = await browser.new_page(extra_http_headers=data_source.headers)
+    page = await browser.new_page(extra_http_headers=headers)
     await page.goto(path)
     await page.add_style_tag(content=".banner-bottom {display: none;}")
 
@@ -80,7 +80,7 @@ async def count_damage(bot, ev):
                 method='GET',
                 url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log-filter/a",
                 connector=connector,
-                headers=data_source.headers,
+                headers=headers,
         ) as resp:
             res = await resp.json()
 
@@ -94,7 +94,7 @@ async def count_damage(bot, ev):
                     method='GET',
                     url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=" + day,
                     connector=connector,
-                    headers=data_source.headers,
+                    headers=headers,
             ) as resp:
                 res = await resp.json()
         report = res['data']
@@ -126,9 +126,9 @@ async def count_damage(bot, ev):
 @sv.on_fullmatch('出刀状态')
 async def damage_status(bot, ev):
     # 先获取用户
-    member = await data_source.get_member()
+    member = await get_member()
     # 再获取报表
-    report = await data_source.today_report()
+    report = await today_report()
 
     reportMap = {}
     for item in report:
@@ -150,7 +150,7 @@ async def damage_status(bot, ev):
 
 
 @sv.on_fullmatch('出刀详细')
-def DamageDetail(bot, ev):
+async def DamageDetail(bot, ev):
     HTML_code = """
       <!DOCTYPE html>
     <html lang="en">
@@ -220,15 +220,15 @@ def DamageDetail(bot, ev):
     </body>
     </html>
         """
-    # boss = await data_source.get_boss_info()
-    # bossMap = {}
-    # for item in boss:
-    #     bossMap[item['id']] = item
-    #
+    boss = await data_source.get_boss_info()
+    bossMap = {}
+    for item in boss:
+        bossMap[item['id']] = item
+
     # 先获取用户
-    member = await data_source.get_member()
+    member = await get_member()
     # 再获取报表
-    report = await data_source.today_report()
+    report = await today_report()
 
     reportMap = {}
     for item in report:
