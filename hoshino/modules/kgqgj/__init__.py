@@ -4,7 +4,7 @@ import base64
 import io
 
 from hoshino import Service, priv, util
-from .data_source import get_member, get_boss_info, today_report,headers
+from .data_source import get_member, get_boss_info, today_report, headers
 
 sv_help = '''
 - [坎公工会战]
@@ -134,8 +134,7 @@ async def damage_status(bot, ev):
     for item in report:
         reportMap[item['user_id']] = item
 
-    print(reportMap)
-    msg = f'==== 出刀状态 ====\n'
+    dataList = []
     for user in member:
         uid = user['id']
         name = user['name']
@@ -145,8 +144,17 @@ async def damage_status(bot, ev):
             damage_num = reportMap[uid]['damage_num']
             damage_total = reportMap[uid]['damage_total']
 
-        msg += f"{damage_num}刀 -- \t {damage_total}伤害 -- \t {name}\n"
-
+        dataItem = {
+            'name': name,
+            'damage_num': damage_num,
+            'damage_total': damage_total,
+        }
+        dataList.append(dataItem)
+    # 将dataList按damage_num排序 从高到低
+    dataList.sort(key=lambda k: (k.get('damage_num', 0)), reverse=True)
+    msg = f'==== 出刀状态 ====\n'
+    for damageItem in dataList:
+        msg += f"{damageItem['damage_num']}刀 -- \t {damageItem['damage_total']}伤害 -- \t {damageItem['name']}\n"
     await bot.send(ev, msg)
 
 
