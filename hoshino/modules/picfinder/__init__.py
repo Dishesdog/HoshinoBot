@@ -64,10 +64,10 @@ async def start_finder(bot, ev: CQEvent):
             file = m.data['file']
             url = m.data['url']
             if 'subType' in m.data:
-                sbtype=m.data['subType']
+                sbtype = m.data['subType']
             else:
-                sbtype=None
-            ret=1
+                sbtype = None
+            ret = 1
             break    
     if not ret:
         if pls.get_on_off_status(gid):
