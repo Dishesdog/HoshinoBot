@@ -4,7 +4,7 @@ import base64
 import io
 
 from hoshino import Service, priv, util
-from .data_source import headers
+from .data_source import headers, get_member, get_report
 
 sv_help = '''
 - [坎公工会战]
@@ -120,4 +120,28 @@ async def count_damage(bot, ev):
     for damageItem in damageTotal:
         i = i + 1
         msg += f"{i}\t{damageItem['damage']} --【{damageItem['name']}】\n"
+    await bot.send(ev, msg)
+
+
+@sv.on_fullmatch('出刀状态')
+async def count_damage(bot, ev):
+    # 先获取用户
+    member = await get_member()
+    # 再获取报表
+    report = await get_report()
+
+    reportMap = {}
+    for item in report:
+        reportMap[item['user_id']] = item['damage_num']
+
+    msg = f'\t==== 出刀状态 ====\n'
+    for user in member:
+        uid = user['id']
+        name = user['name']
+        num = 0
+        if uid in reportMap:
+            num = reportMap[uid]
+
+        msg += f"{name} -- {num}刀\n"
+
     await bot.send(ev, msg)

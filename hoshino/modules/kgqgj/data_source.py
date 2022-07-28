@@ -2,6 +2,7 @@
 
 import time
 import httpx
+import aiohttp
 import random
 from hoshino import util, config
 import json
@@ -35,17 +36,37 @@ headers = {
 
 # 工会成员
 async def get_member():
-    url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log-filter/a"
-
-    async with httpx.AsyncClient(headers=headers) as client:
-        resp = await client.get(url=url)
-    return resp.json()["data"]["member"]
+    async with aiohttp.TCPConnector(verify_ssl=False) as connector:
+        async with aiohttp.request(
+                method='GET',
+                url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log-filter/a",
+                connector=connector,
+                headers=headers,
+        ) as resp:
+            res = await resp.json()
+    data = res['data']
+    member = data['member']
+    return member
 
 
 #  当日报刀
 async def get_report():
-    url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date="
+    async with aiohttp.TCPConnector(verify_ssl=False) as connector:
+        async with aiohttp.request(
+                method='GET',
+                url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=",
+                connector=connector,
+                headers=headers,
+        ) as resp:
+            res = await resp.json()
+    data = res['data']
+    return data
 
-    async with httpx.AsyncClient(headers=headers) as client:
-        resp = await client.get(url=url)
-    return resp.json()["data"]["member"]
+
+async def getData():
+    # 默认
+    url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log/a&date=&user_id=&page=1&size=15"
+    # 日期筛选
+    url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log/a&date=2022-07-28&user_id=&page=1&size=15"
+    # 用户筛选
+    url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log/a&date=&user_id=27213553&page=1&size=15"
