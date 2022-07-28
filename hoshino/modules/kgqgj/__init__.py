@@ -134,7 +134,7 @@ async def damage_status(bot, ev):
     for item in report:
         reportMap[item['user_id']] = item['damage_num']
 
-    msg = f'\t==== 出刀状态 ====\n'
+    msg = f'==== 出刀状态 ====\n'
     for user in member:
         uid = user['id']
         name = user['name']
@@ -142,6 +142,6 @@ async def damage_status(bot, ev):
         if uid in reportMap:
             num = reportMap[uid]
 
-        msg += f"{name} -- {num}刀\n"
+        msg += f"{num}刀 -- \t{name}\n"
 
     await bot.send(ev, msg)
