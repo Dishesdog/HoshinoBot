@@ -4,7 +4,7 @@ import base64
 import io
 
 from hoshino import Service, priv, util
-from .data_source import headers, get_member, today_report, get_boss_info
+import data_source
 
 sv_help = '''
 - [坎公工会战]
@@ -143,7 +143,8 @@ async def damage_status(bot, ev):
         if uid in reportMap:
             damage_num = reportMap[uid]['damage_num']
             damage_total = reportMap[uid]['damage_total']
-            msg += f"{damage_num}刀 -- \t {damage_total}伤害 -- \t{name}\n"
+
+        msg += f"{damage_num}刀 -- \t {damage_total}伤害 -- \t{name}\n"
 
     await bot.send(ev, msg)
 
