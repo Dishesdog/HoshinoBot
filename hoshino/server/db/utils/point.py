@@ -61,7 +61,7 @@ async def add_random_points(uid: int, endpoint: int) -> int:
     import random
 
     num = random.randint(1, endpoint)
-    await add_points(uid, num)
+    # await add_points(uid, num)
     return num
 
 
