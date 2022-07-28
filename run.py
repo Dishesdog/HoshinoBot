@@ -6,7 +6,7 @@ bot = hoshino.init()
 app = bot.asgi
 
 # bot.on_startup(init_bot)
-bot.on_startup()
+# bot.on_startup()
 
 if __name__ == '__main__':
     bot.run(use_reloader=False, loop=asyncio.get_event_loop())
