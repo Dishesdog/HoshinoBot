@@ -154,7 +154,7 @@ async def damage_status(bot, ev):
     dataList.sort(key=lambda k: (k.get('num', 0), k.get('total', 0)), reverse=True)
     msg = f'==== 出刀状态 ====\n'
     for damageItem in dataList:
-        msg += f"{damageItem['damage_num']}刀 -- \t {damageItem['damage_total']}伤害 -- \t {damageItem['name']}\n"
+        msg += f"{damageItem['num']}刀 -- \t {damageItem['total']}伤害 -- \t {damageItem['name']}\n"
     await bot.send(ev, msg)
 
 
