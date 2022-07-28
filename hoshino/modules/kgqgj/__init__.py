@@ -220,11 +220,11 @@ def DamageDetail(bot, ev):
     </body>
     </html>
         """
-    boss = await data_source.get_boss_info()
-    bossMap = {}
-    for item in boss:
-        bossMap[item['id']] = item
-
+    # boss = await data_source.get_boss_info()
+    # bossMap = {}
+    # for item in boss:
+    #     bossMap[item['id']] = item
+    #
     # 先获取用户
     member = await data_source.get_member()
     # 再获取报表

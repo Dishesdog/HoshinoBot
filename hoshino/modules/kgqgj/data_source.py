@@ -40,6 +40,7 @@ async def get_member():
     return member
 
 
+# boss 状态
 async def get_boss_info():
     async with aiohttp.TCPConnector(verify_ssl=False) as connector:
         async with aiohttp.request(
