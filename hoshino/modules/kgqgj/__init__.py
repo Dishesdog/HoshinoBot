@@ -146,12 +146,12 @@ async def damage_status(bot, ev):
 
         dataItem = {
             'name': name,
-            'damage_num': damage_num,
-            'damage_total': damage_total,
+            'num': damage_num,
+            'total': damage_total,
         }
         dataList.append(dataItem)
-    # 将dataList按damage_num排序 从高到低
-    dataList.sort(key=lambda k: (k.get('damage_num', 0)), reverse=True)
+    # 将dataList先按num再按total排序 从高到低
+    dataList.sort(key=lambda k: (k.get('num', 0), k.get('total', 0)), reverse=True)
     msg = f'==== 出刀状态 ====\n'
     for damageItem in dataList:
         msg += f"{damageItem['damage_num']}刀 -- \t {damageItem['damage_total']}伤害 -- \t {damageItem['name']}\n"
