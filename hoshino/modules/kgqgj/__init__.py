@@ -4,7 +4,7 @@ import base64
 import io
 
 from hoshino import Service, priv, util
-from .data_source import headers, get_member, today_report
+from .data_source import headers, get_member, today_report, get_boss_info
 
 sv_help = '''
 - [坎公工会战]
@@ -138,10 +138,130 @@ async def damage_status(bot, ev):
     for user in member:
         uid = user['id']
         name = user['name']
-        num = 0
+        damage_num = 0
+        damage_total = 0
         if uid in reportMap:
-            num = reportMap[uid]
-
-        msg += f"{num}刀 -- \t{name}\n"
+            damage_num = reportMap[uid]['damage_num']
+            damage_total = reportMap[uid]['damage_total']
+            msg += f"{damage_num}刀 -- \t {damage_total}伤害 -- \t{name}\n"
 
     await bot.send(ev, msg)
+
+
+@sv.on_fullmatch('出刀详细')
+def DamageDetail(bot, ev):
+    HTML_code = """
+      <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                background-color: #f5f5f5;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #ccc;
+                padding: 1rem 1rem 1rem 1rem;
+                min-height: 350px;
+                box-shadow: 0 8px 60px -10px rgba(13, 28, 39, 0.6);
+                background: #fff;
+                border-radius: 16px;
+                max-width: 700px;
+                position: relative;
+            }
+
+            th, td {
+                border: 1px solid #000;
+                padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+                text-align: center;
+            }
+
+            th {
+                background: #f5f5f5;
+            }
+        </style>
+    </head>
+    <body>
+    <table>
+        <thead>
+        <tr>
+            <th>成员</th>
+            <th>出刀</th>
+            <th>伤害</th>
+            <th>boos1</th>
+            <th>boos2</th>
+            <th>boos3</th>
+            <th>boos4</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+        </tr>
+        </tbody>
+    </table>
+
+    </body>
+    </html>
+        """
+    boss = await get_boss_info()
+    bossMap = {}
+    for item in boss:
+        bossMap[item['id']] = item
+
+    # 先获取用户
+    member = await get_member()
+    # 再获取报表
+    report = await today_report()
+
+    reportMap = {}
+    for item in report:
+        reportMap[item['user_id']] = item
+
+    msg = f'==== 出刀状态 ====\n'
+    for user in member:
+        uid = user['id']
+        name = user['name']
+        damage_num = 0
+        damage_total = 0
+        if uid in reportMap:
+            damage_num = reportMap[uid]['damage_num']
+            damage_total = reportMap[uid]['damage_total']
+            damage_list = reportMap[uid]['damage_list']
+            # 详情
+            for damage in damage_list:
+                # damage['damage'] # 伤害
+                # damage['boss_name'] # 伤害类型
+                msg += f"{damage['damage']} --【{damage['name']}】\n"
+
+    await bot.send(ev, msg)
+
+
+def getBossTable(boss):
+    table = f'<table><thead><tr><th>BOSS</th><th>Lv</th><th>属性</th><th>总生命值</th><th>剩余生命值</th></tr></thead><tbody>'
+    for item in boss:
+        table += f'<tr>'
+        table += f'<td>{item["name"]}</td>'
+        table += f'<td>{item["level"]}</td>'
+        table += f'<td>{item["elemental_type_cn"]}</td>'
+        table += f'<td>{item["total_hp"]}</td>'
+        table += f'<td>{item["remain_hp"]}</td>'
+        table += f'</tr>'
+
+    table += f'</tbody></table>'
+    return table

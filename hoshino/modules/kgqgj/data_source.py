@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import time
-import httpx
 import aiohttp
-import random
-from hoshino import util, config
-import json
-
-from hoshino import Service, priv, util
-from hoshino.config.path_config import TEMPLATE_PATH
-from hoshino.server.db.utils.point import add_random_points
 
 # https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=
 # https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=2021-10-10
@@ -49,6 +40,19 @@ async def get_member():
     return member
 
 
+async def get_boss_info():
+    async with aiohttp.TCPConnector(verify_ssl=False) as connector:
+        async with aiohttp.request(
+                method='GET',
+                url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-boss-info/a",
+                connector=connector,
+                headers=headers,
+        ) as resp:
+            res = await resp.json()
+    data = res['data']
+    return data['boss']
+
+
 #  当日报刀
 async def today_report():
     async with aiohttp.TCPConnector(verify_ssl=False) as connector:
@@ -70,3 +74,5 @@ async def getData():
     url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log/a&date=2022-07-28&user_id=&page=1&size=15"
     # 用户筛选
     url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log/a&date=&user_id=27213553&page=1&size=15"
+
+    url = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-boss-info/a"
