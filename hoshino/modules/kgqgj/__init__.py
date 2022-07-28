@@ -35,7 +35,7 @@ async def get_report(bot, ev):
     path = 'https://www.bigfun.cn/tools/gt/t_report'
 
     browser = await util.browser.get_browser()
-    page = await browser.new_page(extra_http_headers=headers)
+    page = await browser.new_page(extra_http_headers=data_source.headers)
     await page.goto(path)
     await page.wait_for_timeout(100)
     await page.add_style_tag(content="body {max-width: 35.5rem;}")
@@ -57,7 +57,7 @@ async def get_boss_report(bot, ev):
     path = 'https://www.bigfun.cn/tools/gt/boss'
 
     browser = await util.browser.get_browser()
-    page = await browser.new_page(extra_http_headers=headers)
+    page = await browser.new_page(extra_http_headers=data_source.headers)
     await page.goto(path)
     await page.add_style_tag(content=".banner-bottom {display: none;}")
 
@@ -80,7 +80,7 @@ async def count_damage(bot, ev):
                 method='GET',
                 url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log-filter/a",
                 connector=connector,
-                headers=headers,
+                headers=data_source.headers,
         ) as resp:
             res = await resp.json()
 
@@ -94,7 +94,7 @@ async def count_damage(bot, ev):
                     method='GET',
                     url="https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report/a&date=" + day,
                     connector=connector,
-                    headers=headers,
+                    headers=data_source.headers,
             ) as resp:
                 res = await resp.json()
         report = res['data']
@@ -126,9 +126,9 @@ async def count_damage(bot, ev):
 @sv.on_fullmatch('出刀状态')
 async def damage_status(bot, ev):
     # 先获取用户
-    member = await get_member()
+    member = await data_source.get_member()
     # 再获取报表
-    report = await today_report()
+    report = await data_source.today_report()
 
     reportMap = {}
     for item in report:
@@ -220,15 +220,15 @@ def DamageDetail(bot, ev):
     </body>
     </html>
         """
-    boss = await get_boss_info()
+    boss = await data_source.get_boss_info()
     bossMap = {}
     for item in boss:
         bossMap[item['id']] = item
 
     # 先获取用户
-    member = await get_member()
+    member = await data_source.get_member()
     # 再获取报表
-    report = await today_report()
+    report = await data_source.today_report()
 
     reportMap = {}
     for item in report:
