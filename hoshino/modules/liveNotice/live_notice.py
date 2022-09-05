@@ -29,18 +29,18 @@ class Live(RSS):
         return data
 
 
-class BiliLive(Live):
+class BiliLive:
     def __init__(self, rId):
-        super().__init__(f'/bilibili/live/room/{rId}')
         self.platform = '哔哩哔哩'
         self.room_id = rId
+        self.latest_time = ''
 
 
-class DouyuLive(Live):
+class DouyuLive:
     def __init__(self, rId):
-        super().__init__(f'/douyu/room/{rId}')
         self.platform = '斗鱼'
         self.room_id = rId
+        self.latest_time = ''
 
     def checkLive(self, rId):
         url = 'https://m.douyu.com/' + rId
@@ -92,8 +92,6 @@ for subs in _subscribes:
 @sv.scheduled_job('cron', minute='*', second='1')
 async def check_live():
     for lv in _lives:
-        await lv.get()
-
         isLive = 0
         avatar = ""
         title = ""
