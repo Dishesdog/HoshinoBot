@@ -93,14 +93,14 @@ for subs in _subscribes:
 async def check_live():
     for lv in _lives:
         isLive = 0
-        avatar = ""
+        cover = ""
         title = ""
         opTm = 0
         link = ""
         if lv.platform == "斗鱼":
             res = lv.checkLive(room_id)
             if res:
-                avatar = res.get('avatar')
+                cover = res.get('roomSrc')
                 isLive = res.get('isLive')
                 title = res.get('roomName')
                 opTm = res.get('showTime')
@@ -116,7 +116,10 @@ async def check_live():
                 _subscribes[str(lv.room_id)]['latest_time'] = latest_time
                 save_config(_subscribes, subs_path)
                 sv.logger.info(f'检测到{lv.platform}{lv.room_id}直播间开播了')
-                await notice(lv.room_id, f'开播提醒=========\n{avatar}\n{title}\n{link}')
+
+                pic = f'[CQ:image,file={cover}]'.format(cover=cover)
+                at = f"[CQ:at,qq=all]"
+                await notice(lv.room_id, f'开播提醒{at}\n{pic}\n{title}\n{link}')
         else:
             # 未开播
             pass
