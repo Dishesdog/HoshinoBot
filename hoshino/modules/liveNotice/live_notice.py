@@ -104,7 +104,7 @@ async def check_live():
                 isLive = res.get('isLive')
                 title = res.get('roomName')
                 opTm = res.get('showTime')
-                link = "www.douyu.com/" + room_id
+                link = "www.douyu.com/" + str(room_id)
         else:
             pass
 
