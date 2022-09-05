@@ -1,8 +1,10 @@
+import time
 from os import path
 
 from lxml import etree
 from nonebot import CommandSession
-
+import requests
+import re
 from hoshino.service import Service, priv
 from hoshino.modules.liveNotice._util import load_config, save_config, broadcast, RSS
 
@@ -39,6 +41,17 @@ class DouyuLive(Live):
         super().__init__(f'/douyu/room/{rId}')
         self.platform = '斗鱼'
         self.room_id = rId
+
+    def checkLive(self, rId):
+        url = 'https://m.douyu.com/' + rId
+        text = requests.get(url).text
+        for i in text.split("\n"):
+            regex = re.compile(r"var \$ROOM = ([^']*)")
+            match = regex.search(i)
+            if match:
+                res = dict(eval(match.group(1)))
+                return res
+        return None
 
 
 async def notice(rId, msg):
@@ -80,19 +93,32 @@ for subs in _subscribes:
 async def check_live():
     for lv in _lives:
         await lv.get()
-        data = lv.parse_xml()
-        if data.get('title'):  # 开播状态
-            title = data['title']
-            link = data['link']
-            tuber = data['tuber']
-            latest_time = data['latest_time']
+
+        isLive = 0
+        avatar = ""
+        title = ""
+        opTm = 0
+        link = ""
+        if lv.platform == "斗鱼":
+            res = lv.checkLive(room_id)
+            if res:
+                avatar = res.get('avatar')
+                isLive = res.get('isLive')
+                title = res.get('roomName')
+                opTm = res.get('showTime')
+                link = "www.douyu.com/" + room_id
+        else:
+            pass
+
+        if isLive:
+            latest_time = opTm
             if latest_time != lv.latest_time:
                 lv.latest_time = latest_time
                 global _subscribes
                 _subscribes[str(lv.room_id)]['latest_time'] = latest_time
                 save_config(_subscribes, subs_path)
                 sv.logger.info(f'检测到{lv.platform}{lv.room_id}直播间开播了')
-                await notice(lv.room_id, f'开播提醒=========\n{tuber}\n{title}\n{link}')
+                await notice(lv.room_id, f'开播提醒=========\n{avatar}\n{title}\n{link}')
         else:
             # 未开播
             pass
