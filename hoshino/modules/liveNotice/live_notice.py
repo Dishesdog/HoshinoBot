@@ -89,7 +89,7 @@ for subs in _subscribes:
         _lives.append(dl)
 
 
-@sv.scheduled_job('cron', minute='*/3', second='10')
+@sv.scheduled_job('cron', minute='*', second='1')
 async def check_live():
     for lv in _lives:
         await lv.get()
