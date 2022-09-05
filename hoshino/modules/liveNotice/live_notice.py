@@ -43,7 +43,7 @@ class DouyuLive:
         self.latest_time = ''
 
     def checkLive(self, rId):
-        url = 'https://m.douyu.com/' + rId
+        url = 'https://m.douyu.com/' + str(rId)
         text = requests.get(url).text
         for i in text.split("\n"):
             regex = re.compile(r"var \$ROOM = ([^']*)")
