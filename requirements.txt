@@ -1,4 +1,5 @@
-nonebot[scheduler]==1.8.0
+Quart==0.14.1
+MarkupSafe~=1.0
 Jinja2~=2.11.2
 werkzeug~=1.0.1
 wsproto~=0.15.0

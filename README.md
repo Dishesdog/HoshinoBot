@@ -1,9 +1,12 @@
 # HoshinoBot
-[![License](https://img.shields.io/github/license/Ice-Cirno/HoshinoBot)](LICENSE)
+[![License](https://img.shields.io/github/license/Ice9Coffee/HoshinoBot)](LICENSE)
 ![Python Version](https://img.shields.io/badge/python-3.8+-blue)
 ![Nonebot Version](https://img.shields.io/badge/nonebot-1.6.0%2B%2C%202.0.0---blue)
+
 [![试用/赞助群](https://img.shields.io/badge/试用/赞助-Hoshinoのお茶会-brightgreen)](https://jq.qq.com/?_wv=1027&k=eYGgrL4A)
-[![开发交流群](https://img.shields.io/badge/开发交流-Hoshinoの后花园-brightgreen)](https://jq.qq.com/?_wv=1027&k=wgirhYYQ)
+[![开发交流群](https://img.shields.io/badge/开发交流-Hoshinoの4番灵装-brightgreen)](https://jq.qq.com/?_wv=1027&k=6zyqKSqT)
+[![防炸群备胎](https://img.shields.io/badge/开发交流-Hoshinoの5番灵装-brightgreen)](https://jq.qq.com/?_wv=1027&k=WYcls71E)
+[![Telegram](https://img.shields.io/badge/Telegram-后花园国际部-blue)](https://t.me/+u2Sv4sS-8CEwZjc1)
 
 A QQ-bot for Princess Connect Re:Dive based on [Nonebot](https://github.com/nonebot/nonebot)
 
@@ -12,16 +15,18 @@ A QQ-bot for Princess Connect Re:Dive based on [Nonebot](https://github.com/none
 
 - 2019.09.20 HoshinoBot诞生
 - ... (待补充)
-- **2020年8月2日0点，qq机器人框架相继停止维护。** **感谢 酷Q项目 和 CQHTTP插件 的开发者们！感谢他们让Hoshino得以诞生！** **Hoshino不再对酷Q进行支持**
+- 2020年8月2日0点，CoolQ框架停止维护。HoshinoBot改用gocqhttp作为无头QQ客户端。
 
 </details>
 
 
 ## 简介
 
-**HoshinoBot:** 基于 [nonebot](https://docs.nonebot.dev/) 框架，开源、无公害、非转基因的QQ机器人。
+**HoshinoBot:** 基于 [nonebot](https://docs.nonebot.dev/) 的开源Q群bot框架。
 
 
+## 更新公告
+- 2023.04: 支持Twitter API v2。使用前请按照[指引](https://github.com/Ice9Coffee/HoshinoBot/pull/271#issuecomment-1505584958)升级框架。由于Twitter API政策仍在频繁调整，不保证未来的可用性。感谢贡献者[@othinus001](https://github.com/othinus001)！
 
 ## 功能介绍
 
@@ -100,7 +105,7 @@ QQ群[![试用/赞助群](https://img.shields.io/badge/试用/赞助-Hoshinoの�
 ## 开源协议及免责声明
 
 本项目遵守GPL-3.0协议开源，请在协议允许的条件及范围内使用本项目。本项目的开发者不会强制向您索要任何费用，同时也不会提供任何质保，一切因本项目引起的法律、利益纠纷由与本项目的开发者无关。
-- 对于自行搭建、小范围私用的非营利性bot，若遇到任何部署、开发上的疑问，欢迎提交issue或加入[![开发交流群](https://img.shields.io/badge/开发交流-Hoshinoの后花园-brightgreen)](https://jq.qq.com/?_wv=1027&k=wgirhYYQ)讨论，我们欢迎有礼貌、描述详尽的提问！
+- 对于自行搭建、小范围私用的非营利性bot，若遇到任何部署、开发上的疑问，欢迎提交issue或加入[开发交流群](https://jq.qq.com/?_wv=1027&k=6zyqKSqT)（如炸群请加备用群[星乃の5番灵装](https://jq.qq.com/?_wv=1027&k=WYcls71E)）讨论，我们欢迎有礼貌、描述详尽的提问！
 - 对于以营利为目的部署的bot，由部署者负责，与本项目的开发者无关，本项目的开发者及社区没有义务回答您部署时的任何疑问。
 - 对于HoshinoBot插件的开发者，在您发布插件或利用插件营利时，请遵守GPL-3.0协议将插件代码开源。
 
@@ -110,7 +115,7 @@ QQ群[![试用/赞助群](https://img.shields.io/badge/试用/赞助-Hoshinoの�
 
 ## 部署指南
 
-**由于酷Q已停止运营，您可以使用[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)或[CQHTTP Mirai](https://github.com/yyuueexxiinngg/cqhttp-mirai)作为无头QQ客户端。**
+**HoshinoBot基于OneBot协议通信，使用[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)或[CQHTTP Mirai](https://github.com/yyuueexxiinngg/cqhttp-mirai)作为无头QQ客户端。**
 
 <details>
   <summary>（点击查看社区提供的部署指南）</summary>
@@ -137,7 +142,7 @@ QQ群[![试用/赞助群](https://img.shields.io/badge/试用/赞助-Hoshinoの�
 3. 输入以下命令克隆本仓库并安装依赖
 
     ```powershell
-    git clone https://github.com/Ice-Cirno/HoshinoBot.git
+    git clone https://github.com/Ice9Coffee/HoshinoBot.git
     cd HoshinoBot
     py -3.8 -m pip install -r requirements.txt
     ```
@@ -216,7 +221,7 @@ QQ群[![试用/赞助群](https://img.shields.io/badge/试用/赞助-Hoshinoの�
 
 2. 克隆本仓库并安装依赖包
     ```bash
-    git clone https://github.com/Ice-Cirno/HoshinoBot.git
+    git clone https://github.com/Ice9Coffee/HoshinoBot.git
     cd HoshinoBot
     python3.8 -m pip install -r requirements.txt
     ```
@@ -293,7 +298,7 @@ QQ群[![试用/赞助群](https://img.shields.io/badge/试用/赞助-Hoshinoの�
 - setu库
 - [是谁呼叫舰队](http://fleet.diablohu.com/)舰娘&装备页面截图
 
-等资源。自行收集可能较为困难，所以我们准备了一个较为精简的资源包以及下载脚本，可以满足公主连接相关功能的日常使用。如果需要，请加入QQ群 **Hoshino的后花园** 367501912，下载群文件中的`res.zip`。
+等资源。自行收集可能较为困难，所以我们准备了一个较为精简的资源包以及下载脚本，可以满足公主连接相关功能的日常使用。如果需要，请加入QQ群 **Hoshino的后花园** 761100284，下载群文件中的`res.zip`。
 
 
 
@@ -336,7 +341,7 @@ MIKAN_TOKEN = "abcdfegABCFEFG+123=="
 > 请先在`hoshino/config/__bot__.py`的`MODULES_ON`中取消`hourcall`的注释  
 > 本功能默认关闭，在群内发送 "启用 hourcall" 即可开启
 
-报时功能使用/魔改了艦これ中各个艦娘的报时语音，您可以在[舰娘百科](https://zh.kcwiki.org/wiki/舰娘百科)或[艦これ 攻略 Wiki](https://wikiwiki.jp/kancolle/)找到相应的文本/翻译，当然您也可以自行编写台词。在此，我们向原台词作者[田中](https://bbs.nga.cn/read.php?tid=9143913)[谦介](http://bbs.nga.cn/read.php?tid=14045507)先生和他杰出的游戏作品表达诚挚的感谢！
+报时功能使用/魔改了艦これ中各个艦娘的报时语音，您可以在[舰娘百科](https://zh.kcwiki.org/wiki/舰娘百科)或[艦これ 攻略 Wiki](https://wikiwiki.jp/kancolle/)找到相应的文本/翻译，当然您也可以自行编写台词。在此，我们向原台词作者[田中](https://nga.178.com/read.php?tid=9143913)[谦介](https://nga.178.com/read.php?tid=14045507)先生和他杰出的游戏作品表达诚挚的感谢！
 
 若您已获取时报文本，在文件`hoshino/config/hourcall.py`中填写您的文本。
 

@@ -8,7 +8,7 @@ from functools import wraps
 import nonebot
 import pytz
 from nonebot.command import SwitchException, _FinishException, _PauseException
-from nonebot.message import CanceledException
+from nonebot.message import CanceledException, Message
 
 import hoshino
 from hoshino import log, priv, trigger
@@ -220,7 +220,7 @@ class Service:
             async def wrapper(bot, event: CQEvent):
                 if len(event.message) != 1 or event.message[0].data.get('text'):
                     self.logger.info(f'Message {event.message_id} is ignored by fullmatch condition.')
-                    return
+                    raise SwitchException(Message(event.raw_message))
                 return await func(bot, event)
             sf = ServiceFunc(self, wrapper, only_to_me)
             for w in word:
@@ -232,9 +232,10 @@ class Service:
             # func itself is still func, not wrapper. wrapper is a part of trigger.
             # so that we could use multi-trigger freely, regardless of the order of decorators.
             # ```
-            # """the order doesn't matter"""
+            # @NO_DECO_HERE         # <- won't work
             # @on_keyword(...)
-            # @on_fullmatch(...)
+            # @on_fullmatch(...)    # you can change the order of `on_xx` decorators
+            # @OTHER_DECO_HERE      # <- will work
             # async def func(...):
             #   ...
             # ```
@@ -356,7 +357,7 @@ class Service:
         return deco
 
 
-    async def broadcast(self, msgs, TAG='', interval_time=0.5, randomiser=None):
+    async def broadcast(self, msgs, TAG='', interval_time=0.5, randomizer=None):
         bot = self.bot
         if isinstance(msgs, (str, MessageSegment, Message)):
             msgs = (msgs, )
@@ -365,7 +366,7 @@ class Service:
             try:
                 for msg in msgs:
                     await asyncio.sleep(interval_time)
-                    msg = randomiser(msg) if randomiser else msg
+                    msg = randomizer(msg) if randomizer else msg
                     await bot.send_group_msg(self_id=random.choice(selfids), group_id=gid, message=msg)
                 l = len(msgs)
                 if l:
